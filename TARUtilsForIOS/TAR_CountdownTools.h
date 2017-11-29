@@ -22,6 +22,11 @@
  @return 生成的随机验证码（整数型）
  */
 +(NSString *)generateRandomVerificationCode;
+/**
+ 获取随机验证码（整数型）
+ @return 获取的随机验证码（整数型）
+ */
++(NSString *)getRandomVerificationCode;
 
 @end
 

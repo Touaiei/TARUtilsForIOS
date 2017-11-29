@@ -10,6 +10,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <UIKit/UIKit.h>
 #import <CommonCrypto/CommonDigest.h>
+#import "SDWebImageManager.h"
 
 @implementation TAR_StringToolClass
 /*
@@ -769,13 +770,13 @@
 {
     if ([TAR_StringToolClass isEqualEmptyWithString:imagePath]) {
         if ([imageView isKindOfClass:[UIImageView class]]) {
-            imageView.image = [placeholder isKindOfClass:[UIImage class]]?placeholder:Macro_PlaceholderImage;
+            imageView.image = [placeholder isKindOfClass:[UIImage class]]?placeholder:placeholder;
         }else{
         }
     }else{
         if ([imageView isKindOfClass:[UIImageView class]]) {
             if ([imagePath hasPrefix:@"http"]) {
-                [imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:[placeholder isKindOfClass:[UIImage class]]?placeholder:Macro_PlaceholderImage];
+                [imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:[placeholder isKindOfClass:[UIImage class]]?placeholder:placeholder];
             }else{
                 imageView.image = [UIImage imageNamed:imagePath];
             }

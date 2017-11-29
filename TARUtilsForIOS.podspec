@@ -9,5 +9,9 @@ s.source = { :git => 'https://github.com/touaiei/TARUtilsForIOS.git', :tag => s.
 s.requires_arc = true
 s.ios.deployment_target = '8.0'
 s.source_files = 'TARUtilsForIOS/*.{h,m}'
+s.dependency "SDWebImage", "~> 4.0.0-beta2"
+s.dependency "MBProgressHUD", "~> 1.0.0"
+
 end
+
 

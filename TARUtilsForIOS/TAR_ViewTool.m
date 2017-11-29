@@ -14,7 +14,7 @@
 {
     UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
     
-    UIView *BGView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, W_Screen, H_Screen)];
+    UIView *BGView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [BGView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
     [mainWindow addSubview:BGView];
     [BGView addSubview:targetView];

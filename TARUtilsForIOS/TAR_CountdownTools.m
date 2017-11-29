@@ -11,7 +11,7 @@
 @implementation TAR_CountdownTools
 
 #pragma mark --验证码倒计时--
-+(void)countdownFormVerificationCode:(UIButton *)button;
++(void)countdownFormVerificationCode:(UIButton *)button
 {
     __block int timeout=30; //倒计时时间
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -53,15 +53,23 @@
  生成6位数的随机验证码（整数型）
  @return 生成的随机验证码（整数型）
  */
-+(NSString *)generateRandomVerificationCode;
++(NSString *)generateRandomVerificationCode
 {
     NSInteger arc = arc4random()%999999;
     NSString *randomCodeVerificationCode = [NSString stringWithFormat:@"%0.6ld", (long)arc];
-    [[NSUserDefaults standardUserDefaults]setObject:randomCodeVerificationCode forKey:Macro_VerificationCode_Key];
+    [[NSUserDefaults standardUserDefaults]setObject:randomCodeVerificationCode forKey:@"VerificationCode_Key"];
     [[NSUserDefaults standardUserDefaults]synchronize];
     NSLog(@"随机验证码是：%@",randomCodeVerificationCode);
     return randomCodeVerificationCode;
 }
-
+/**
+ 获取随机验证码（整数型）
+ @return 获取的随机验证码（整数型）
+ */
++(NSString *)getRandomVerificationCode
+{
+    NSString *code = [[NSUserDefaults standardUserDefaults] objectForKey:@"VerificationCode_Key"];
+    return code;
+}
 
 @end
