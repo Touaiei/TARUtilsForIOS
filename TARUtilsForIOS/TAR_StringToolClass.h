@@ -71,45 +71,45 @@ typedef NS_ENUM(NSInteger, FontSize){
  @param key 需要判断的 KEY
  @return 为空返回YES，不为空返回NO
  */
-+(BOOL)isEqualEmptyFromSingleLayerWithDictionary:(NSDictionary *)dict withKey:(NSString *)key;
++(BOOL)isEqualEmptyFromSingleLayerWithDictionary:(NSDictionary *_Nonnull)dict withKey:(NSString *_Nonnull)key;
 /**
  判断NSDictionary中 KEY及对应Value 是否为空(多层判断)
  @param dict 目标NSDictionary
  @param key 需要判断的 KEY
  @return 为空返回YES，不为空返回NO
  */
-+(BOOL)isEqualEmptyFromMoreLayerWithDictionary:(NSDictionary *)dict withKey:(NSString *)key;
++(BOOL)isEqualEmptyFromMoreLayerWithDictionary:(NSDictionary *_Nonnull)dict withKey:(NSString *_Nonnull)key;
 
 /**
  判断字符串是否为纯浮点数
  */
-+(BOOL)isEqualPureFloat:(NSString*)string;
++(BOOL)isEqualPureFloat:(NSString*_Nonnull)string;
 
 /**
  判断字符串是否为纯整数
  */
-+(BOOL)isEqualPureInt:(NSString*)string;
++(BOOL)isEqualPureInt:(NSString *_Nonnull)string;
 
 /**
  判断String 是否为空
  @param string 需要判断的 string
  @return 为空返回YES，不为空返回NO
  */
-+(BOOL)isEqualEmptyWithString:(NSString *)string;
++(BOOL)isEqualEmptyWithString:(NSString *_Nonnull)string;
 
 /**
  判断Array 是否为空
  @param array 需要判断的 array
  @return 为空返回YES，不为空返回NO
  */
-+(BOOL)isEqualEmptyWithArray:(NSArray *)array;
++(BOOL)isEqualEmptyWithArray:(NSArray *_Nonnull)array;
 
 /**
  判断Dictionary 是否为空
  @param dictionary 需要判断的 dictionary
  @return 为空返回YES，不为空返回NO
  */
-+(BOOL)isEqualEmptyWithDictionary:(NSDictionary *)dictionary;
++(BOOL)isEqualEmptyWithDictionary:(NSDictionary *_Nonnull)dictionary;
 
 
 /**
@@ -120,14 +120,14 @@ typedef NS_ENUM(NSInteger, FontSize){
 /**
  把字符串替换成星号
  */
-+(NSString *)replaceStringWithAsterisk:(NSString *)originalStr startLocation:(NSInteger)startLocation lenght:(NSInteger)lenght;
++(NSString *_Nonnull)replaceStringWithAsterisk:(NSString *_Nonnull)originalStr startLocation:(NSInteger)startLocation lenght:(NSInteger)lenght;
 
 /**
  颜色渐变——>线性渐变
  @param view 目标View
  @param alpha 设置透明度alpha
  */
-+(void)colorGradientForStatusBar:(UIView *)view alpha:(CGFloat)alpha;
++(void)colorGradientForStatusBar:(UIView *_Nonnull)view alpha:(CGFloat)alpha;
 
 /**
  颜色渐变——>线性渐变
@@ -135,24 +135,24 @@ typedef NS_ENUM(NSInteger, FontSize){
  @param startColor 开始颜色（可以设置透明度alpha）
  @param endColor 结束颜色（可以设置透明度alpha）
  */
-+(void)colorGradientLinearForView:(UIView *)view startColor:(UIColor *)startColor endColor:(UIColor *)endColor;
++(void)colorGradientLinearForView:(UIView *_Nonnull)view startColor:(UIColor *_Nonnull)startColor endColor:(UIColor *_Nonnull)endColor;
 
 /**
  设置View边框颜色及粗细
  */
-+(void)layerBorderColorAndborderWidth:(UIView *)view borderColor:(UIColor *)bColor borderWidth:(CGFloat)bWidth;
++(void)layerBorderColorAndborderWidth:(UIView *_Nonnull)view borderColor:(UIColor *_Nonnull)bColor borderWidth:(CGFloat)bWidth;
 
 /**
  获取当前时间戳
  */
-+(NSString *)GetTimestamp;
++(NSString *_Nonnull)GetTimestamp;
 
 
 /**
  *  @param input 传入的中文
  *  @return 完成转码后返回结果
  */
-+(NSString *)encodeToPercentEscapeString:(NSString *)input;
++(NSString *_Nonnull)encodeToPercentEscapeString:(NSString *_Nonnull)input;
 
 
 /**
@@ -161,7 +161,7 @@ typedef NS_ENUM(NSInteger, FontSize){
  @param nativeVesion nativeVesion
  @return appStoreVersion > nativeVesion ? return YES : return NO
  */
-+(BOOL)compareVesionWithServerVersion:(NSString *)appStoreVersion  nativeVesion:(NSString *)nativeVesion;
++(BOOL)compareVesionWithServerVersion:(NSString *_Nonnull)appStoreVersion  nativeVesion:(NSString *_Nonnull)nativeVesion;
 
 
 /**
@@ -169,20 +169,20 @@ typedef NS_ENUM(NSInteger, FontSize){
  @param string 需要转换的String
  @return 返回转换后的ASCII码String
  */
-+(NSString *)stringToASCIICodeFromString:(NSString *)string;
++(NSString *_Nonnull)stringToASCIICodeFromString:(NSString *_Nonnull)string;
 
 /**
  把传入的字典参数Key按首字符排序后，取出对应的value依次拼接形成一个字符串，再把该字符串传入MD5加密方法加密，形成最终的签名字符串
  @return 返回排序后的签名字符串
  */
-+(NSString *)getSignWithDictionary:(NSDictionary *)Dic;
++(NSString *_Nonnull)getSignWithDictionary:(NSDictionary *_Nonnull)Dic;
 
 /**
  序列化Dictionary，将NSDictionary中的Null类型的项目转化成@""
  @param myDic 转换前的旧Dictionary
  @return 返回转换后的新Dictionary
  */
-+(NSDictionary *)nullToNonnullWithDictionary:(nonnull NSDictionary *)myDic;
++(NSDictionary *_Nonnull)nullToNonnullWithDictionary:(nonnull NSDictionary *)myDic;
 
 
 /**

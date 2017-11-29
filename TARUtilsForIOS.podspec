@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 s.name = 'TARUtilsForIOS'
 s.version = '1.0.1'
 s.license = 'MIT'
-s.summary = '唐爱荣的工具箱 For iOS.'
+s.summary = '这是唐爱荣的工具箱 For iOS.'
 s.homepage = 'https://github.com/touaiei/TARUtilsForIOS'
 s.authors = { '唐爱荣' => 'touaiei@163.com' }
 s.source = { :git => 'https://github.com/touaiei/TARUtilsForIOS.git', :tag => s.version.to_s }
