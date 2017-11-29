@@ -12,8 +12,6 @@
 //#import <MBProgressHUD/MBProgressHUD.h>
 #import <MBProgressHUD.h>
 
-#import "MBProgressHUD.h"
-
 typedef NS_ENUM(NSInteger, TARProgressHUDPopupBoxType) {
     TARProgressHUDPopupBoxType_Prompt = 0,              //弹出提示类型
     TARProgressHUDPopupBoxType_PromptForAutoHidden = 1, //弹出提示（并且自动隐藏）类型
