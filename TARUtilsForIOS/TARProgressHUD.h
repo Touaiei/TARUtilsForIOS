@@ -9,8 +9,8 @@
  依赖第三方库：MBProgressHUD
  */
 #import <Foundation/Foundation.h>
-//#import <MBProgressHUD/MBProgressHUD.h>
 #import <MBProgressHUD.h>
+
 
 typedef NS_ENUM(NSInteger, TARProgressHUDPopupBoxType) {
     TARProgressHUDPopupBoxType_Prompt = 0,              //弹出提示类型

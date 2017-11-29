@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Reachability.h"
-//@class Reachability;
+
 
 
 @interface TARReachabilityClass : NSObject<UIAlertViewDelegate>
