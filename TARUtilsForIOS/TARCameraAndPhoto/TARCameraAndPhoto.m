@@ -1,19 +1,19 @@
 //
-//  TAR_CameraAndPhotoLibraryClass.m
+//  TARCameraAndPhoto.m
 //  YouJiaApp
 //
 //  Created by TAR on 2017/4/18.
 //  Copyright © 2017年 TAR. All rights reserved.
 //
 
-#import "TAR_CameraAndPhotoLibraryClass.h"
+#import "TARCameraAndPhoto.h"
 
-@interface TAR_CameraAndPhotoLibraryClass ()
+@interface TARCameraAndPhoto ()
 {
     
 }
 @end
-@implementation TAR_CameraAndPhotoLibraryClass
+@implementation TARCameraAndPhoto
 
 - (instancetype)init
 {

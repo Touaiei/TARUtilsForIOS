@@ -1,5 +1,5 @@
 //
-//  TAR_CameraAndPhotoLibraryClass.h
+//  TARCameraAndPhoto.h
 //  YouJiaApp
 //
 //  Created by TAR on 2017/4/18.
@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, TAR_CameraAndPhotoLibrarySourceWay) {
 
 @end
 
-@interface TAR_CameraAndPhotoLibraryClass: NSObject
+@interface TARCameraAndPhoto: NSObject
 <
 UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,

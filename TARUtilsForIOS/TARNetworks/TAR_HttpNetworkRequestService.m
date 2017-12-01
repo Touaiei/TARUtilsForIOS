@@ -131,6 +131,8 @@
         NSLog(@"uploadProgress==%@",uploadProgress);
         progress(uploadProgress);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
+        NSLog(@"responseObject===>%@",responseObject);
+
         NSDictionary *responseObj = [TAR_StringToolClass nullToNonnullWithDictionary:responseObject];
         if ([responseObj isKindOfClass:[NSDictionary class]]) {
             if ([[responseObj allKeys] containsObject:@"status"] == YES) {
