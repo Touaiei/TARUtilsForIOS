@@ -75,7 +75,7 @@
             bottomLine.hidden = NO;
             levelSpaceLine.hidden = YES;
         }else{
-            [segmentedButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            [segmentedButton setTitleColor:_titleColor_NotSelected forState:UIControlStateNormal];
             bottomLine.hidden = YES;
             levelSpaceLine.hidden = NO;
         }

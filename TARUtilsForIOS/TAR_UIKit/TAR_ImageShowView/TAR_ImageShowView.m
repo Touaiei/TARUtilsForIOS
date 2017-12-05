@@ -7,6 +7,8 @@
 //
 
 #import "TAR_ImageShowView.h"
+
+#pragma mark --TAR_ImageShowView--
 @interface TAR_ImageShowView()
 {
     UIView *imageBGView;
@@ -141,6 +143,8 @@
 }
 
 
+
+
 #pragma mark --setter--
 -(void)setSelf_MaxW:(CGFloat)self_MaxW
 {
@@ -178,3 +182,103 @@
 */
 
 @end
+
+
+#pragma mark --TARImageShowKyushuView--
+@interface TARImageShowKyushuView()
+{
+    UIView *_backgroundView;
+}
+@end
+@implementation TARImageShowKyushuView
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self initialize];
+    }
+    return self;
+}
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initialize];
+        
+    }
+    return self;
+}
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self initialize];
+        
+    }
+    return self;
+}
+-(void)initialize
+{
+    _rowShowNumber = 4;//每行展示图片张数（默认4张）
+    _levelSpace = 5.0;//图片间水平方向间距（默认5）
+    _verticalSpace = 5.0;//图片间垂直方向间距（默认5）
+    _imageWidth = (self.bounds.size.width-(_levelSpace*(_rowShowNumber-1)))/_rowShowNumber;//图片宽度（默认平分）
+    _imageHeight = _imageWidth;//图片高度（默认平分）
+    
+    [self initBackgroundView];
+}
+-(void)setRowShowNumber:(CGFloat)rowShowNumber
+{
+    _rowShowNumber = rowShowNumber;
+    [self setImageWidth:(self.bounds.size.width-(_levelSpace*(_rowShowNumber-1)))/_rowShowNumber];
+    [self setImageHeight:_imageWidth];
+}
+
+-(void)initBackgroundView
+{
+    _backgroundView = [[UIView alloc]initWithFrame:self.bounds];
+    _backgroundView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:_backgroundView];
+}
+-(void)showSquareImageWithImagePaths:(NSArray<NSString *> *)imagePaths completed:(void (^)(CGSize))block
+{
+    int columnsNumber = _rowShowNumber;//列数（每行item个数）
+    int columnSpacing = 5;//列间距
+    int rowNumber = 0;//行数（每列item个数）
+    for (int i = 0; i < imagePaths.count; i++) {
+        rowNumber = (i)/columnsNumber+1;
+        UIImageView *_cellImageView = [[UIImageView alloc]initWithFrame:CGRectMake(i%columnsNumber*(_imageWidth+columnSpacing), i/columnsNumber*(_imageHeight+_verticalSpace), _imageWidth, _imageHeight)];
+        _cellImageView.tag = i;
+        _cellImageView.backgroundColor = [UIColor lightGrayColor];
+        _cellImageView.userInteractionEnabled = YES;
+        [_backgroundView addSubview:_cellImageView];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deleteImageButtonTap:)];
+        [_cellImageView addGestureRecognizer:tap];
+        
+        NSString *imagePath = [imagePaths objectAtIndex:i];
+        if ([imagePath hasPrefix:@"http"]) {
+            [_cellImageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:nil];
+
+        }else{
+            _cellImageView.image = [UIImage imageNamed:imagePath];
+        }
+        _backgroundView.height = rowNumber*_imageHeight+(rowNumber-1)*_verticalSpace;//从新指定背景视图高度
+    }
+    CGSize size = CGSizeMake(_backgroundView.width, _backgroundView.height);
+    block(size);
+    
+    
+//    self.layoutCallback(_backgroundView.height);
+}
+
+
+
+
+@end
+
+
+
+
+
+
+

@@ -128,11 +128,8 @@
 {
     AFHTTPSessionManager *session = [[self class] getAFHTTPSessionManagerInstanceObject];
     [session POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        NSLog(@"uploadProgress==%@",uploadProgress);
         progress(uploadProgress);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
-        NSLog(@"responseObject===>%@",responseObject);
-
         NSDictionary *responseObj = [TAR_StringToolClass nullToNonnullWithDictionary:responseObject];
         if ([responseObj isKindOfClass:[NSDictionary class]]) {
             if ([[responseObj allKeys] containsObject:@"status"] == YES) {
@@ -140,11 +137,15 @@
                 NSString *status = [TAR_StringToolClass isEqualEmptyFromSingleLayerWithDictionary:responseObj withKey:@"status"]?@"":responseObj[@"status"];
                 NSString *statusCode = [TAR_StringToolClass isEqualEmptyFromSingleLayerWithDictionary:responseObj withKey:@"scode"]?@"":responseObj[@"scode"];
                 if ([status isEqualToString:@"1"]) {
-                    NSLog(@"请求数据成功==%@",responseObj);
                     success(YES, statusCode, errorMsg, responseObj);
                 }else{
                     NSLog(@"请求数据失败，错误信息==%@",errorMsg);
-                    success(NO, statusCode, errorMsg, responseObj);
+                    if ([statusCode isEqualToString:@"2"]){
+                        [self accountInvalidWarning];
+                        success(NO, statusCode, errorMsg, responseObj);
+                    }else{
+                        success(NO, statusCode, errorMsg, responseObj);
+                    }
                 }
             }
         }
@@ -569,34 +570,15 @@
 //        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"亲，登录已经失效" message:@"请从新登录~" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 //        alertView.delegate = _targetVC;
 //        [alertView show];
-    [TAR_AlertController alertTitle:@"亲，登录已经失效" mesasge:@"请从新登录~" preferredStyle:UIAlertControllerStyleAlert viewController:_targetVC confirmHandler:^(UIAlertAction *action) {
+    [TAR_AlertController alertTitle:@"亲，登录已经失效" mesasge:@"请重新登录~" preferredStyle:UIAlertControllerStyleAlert viewController:_targetVC confirmHandler:^(UIAlertAction *action) {
         if ([AccountManager logOut] == YES) {
-            [self changeMainWindowToLoginVC];
+            
+            [AccountManager changeMainWindowToLoginVC];
+            
+//            [self changeMainWindowToLoginVC];
         }
     }];
 }
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        
-    }else if (buttonIndex == 1){
-        if ([AccountManager logOut] == YES) {
-            [[self class]changeMainWindowToLoginVC];
-        }
-    }
-}
--(void)changeMainWindowToLoginVC
-{
-    /*
-    [UIView animateWithDuration:0.2 animations:^{
-        //切换到MainViewController，当前的这个ViewController会被销毁
-        UIWindow *window = [UIApplication sharedApplication].keyWindow;
-        window.backgroundColor = [UIColor whiteColor];
-        window.rootViewController = [[LoginPageViewController alloc]init];
-    }];
-     */
-}
-
 
 
 #pragma mark --显示HUD提示框--

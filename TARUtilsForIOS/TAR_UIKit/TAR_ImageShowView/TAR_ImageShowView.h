@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^imageClickBlock)(NSArray *imageViews, NSUInteger imageIndex);
+
 @interface TAR_ImageShowView : UIView
 {
     
@@ -25,11 +26,41 @@ typedef void(^imageClickBlock)(NSArray *imageViews, NSUInteger imageIndex);
  */
 -(void)showVerticalImageWithImagesPath:(NSArray <NSString *> *)imagesPath completed:(void (^)(CGSize viewSize))block;
 
+
 //-(void)imageClickEnabled:(BOOL)isEnabled completed:(void (^)(CGSize viewSize))block;
 
 
 
 //-(UIView *)showImageWithImagesPath:(NSArray *)imagesPath ;
 
+@end
+
+
+
+/**
+ 图片展示（九宫格图片）
+ */
+@interface TARImageShowKyushuView : UIView
+{
+    
+}
+typedef void(^showViewHeightBlock)(CGFloat showView_H);
+
+@property(nonatomic, assign)CGFloat levelSpace;//图片间水平方向间距（默认5）
+@property(nonatomic, assign)CGFloat verticalSpace;//图片间垂直方向间距（默认5）
+@property(nonatomic, assign)CGFloat imageWidth;//图片宽度（默认平分）
+@property(nonatomic, assign)CGFloat imageHeight;//图片高度（默认平分）
+@property(nonatomic, assign)CGFloat rowShowNumber;//每行展示图片张数（默认4张）
+@property(nonatomic, copy)imageClickBlock imageClickCallback;
+@property(nonatomic, copy)showViewHeightBlock layoutCallback;//改变布局后回调Block
+
+
+-(void)showSquareImageWithImagePaths:(NSArray <NSString *> *)imagePaths completed:(void (^)(CGSize viewSize))block;
 
 @end
+
+
+
+
+
+
