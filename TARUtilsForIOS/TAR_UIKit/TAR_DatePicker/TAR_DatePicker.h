@@ -48,6 +48,14 @@ typedef NS_ENUM(NSInteger, TAR_DatePickerReturnStyle) {
 
 -(void)startDatePickerWithTarget:(_Nonnull id)target confirmHandler:(void(^_Nonnull)(NSString * _Nonnull date))confirmHandler;
 
+
+/**
+ 替换日期当中出现的字符串（具体看源码）
+ @param dateStr 日期源
+ @return 返回替换好的新日期
+ */
+-(NSString *_Nonnull)replaceDateSeparator:(NSString *_Nonnull)dateStr;
+
 @end
 
 

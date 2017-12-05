@@ -131,6 +131,15 @@ UIAlertViewDelegate
     _datePicker = datePicker;
 }
 
+-(NSString *)replaceDateSeparator:(NSString *)dateStr;
+{
+    //替换字符串（把"年"替换成"-"）
+    NSString *strUrl = [dateStr stringByReplacingOccurrencesOfString:@"年" withString:@"-"];
+    NSString *strUrl2 = [strUrl stringByReplacingOccurrencesOfString:@"月" withString:@"-"];
+    NSString *strUrl3 = [strUrl2 stringByReplacingOccurrencesOfString:@"日" withString:@""];
+    return strUrl3;
+}
+
 #pragma mark --自定义alert视图--
 //IOS8 UIAlertController弹出框中添加视图（例如日期选择器等等）
 - (void)alertControllerAddSubViewWithViewController:(UIViewController *)viewController
