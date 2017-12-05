@@ -14,23 +14,21 @@
 /**
  照片库选取数量类型枚举
  */
-typedef NS_ENUM(NSInteger, TAR_PhotoLibraryType) {
-    TAR_PhotoLibraryType_SingleSelect,//单选
-    TAR_PhotoLibraryType_MoreSelect   //多选
+typedef NS_ENUM(NSInteger, TARPhotoSelectWay) {
+    TARPhotoSelectWay_Single,//单选
+    TARPhotoSelectWay_More   //多选
 };
 
 /**
- 选择资源库类型是 相册还是相机
+ 选择资源库类型是 相册还是照相机
  */
-typedef NS_ENUM(NSInteger, TAR_CameraAndPhotoLibrarySourceWay) {
-    CameraAndPhotoLibrarySourceWay_PhotoLibrary,
-    CameraAndPhotoLibrarySourceWay_Camera
-
+typedef NS_ENUM(NSInteger, TARPhotoSourceWay) {
+    TARPhotoSourceWay_Photo,//通过相册
+    TARPhotoSourceWay_Camera//通过照相机
+    
 };
-@protocol TAR_CameraAndPhotoLibraryClassDelegate <NSObject>
--(void)TAR_CameraAndPhotoLibraryClasProtocol;
-@required
 
+@protocol TARCameraAndPhotoDelegate <NSObject>
 
 @end
 
@@ -41,46 +39,43 @@ UIImagePickerControllerDelegate,
 WHC_ChoicePictureVCDelegate,
 UIAlertViewDelegate,
 UIActionSheetDelegate
-
 >
 {
     
 }
-@property(nonatomic,weak)id <UINavigationControllerDelegate, UIImagePickerControllerDelegate> delegate;
+@property(nullable,nonatomic,weak)id <TARCameraAndPhotoDelegate> delegate;
+@property(nullable,nonatomic,weak)id <UINavigationControllerDelegate, UIImagePickerControllerDelegate> imagePickerDelegate;
+@property (nullable,nonatomic,weak)id<WHC_ChoicePictureVCDelegate> WHCDelegate;
 
 /**
  多选时可用，可选择最大图片数量
  */
 @property(nonatomic,assign)NSUInteger imageNumberMax;
-@property(nonatomic,assign,)NSUInteger imageNumberMin;
-
-
-/**
- 选择相册类型（单选或多选 类型）
- */
-@property(nonatomic,assign)TAR_PhotoLibraryType photoLibraryType;
-@property(nonatomic,assign)TAR_CameraAndPhotoLibrarySourceWay sourceLibraryType;
-@property(nonatomic,strong)id targetVC;
-
-@property(nonatomic,strong)UIImagePickerController *imagePicker;
-
+@property(nonatomic,assign)TARPhotoSelectWay photoSelectWay;
+@property(nonatomic,assign)TARPhotoSourceWay sourceLibraryType;
+@property(nonatomic,strong)id _Nonnull targetVC;
 @property(nonatomic,assign)BOOL allowsEditing;//是否允许编辑图片。default value is NO.
 
 
 /**
- 照相机和相册
+ 弹出选择菜单Alert，照相机和相册
  */
--(void)startCameraAndPhotoLibrary:(UIViewController *)targetVC;
+-(void)startAlertCameraAndPhoto;
 
 /**
- 仅照相机
+ 弹出选择菜单Alert，仅照相机
  */
--(void)startCamera:(id)targetVC;
+-(void)startAlertCamera;
 
 /**
- 仅相册
+ 弹出选择菜单Alert，仅相册
  */
--(void)startPhotoLibrary:(id)targetVC;
+-(void)startAlertPhoto;
+
+/**
+ 开启选择图片，通过照相机或者相册
+ */
+-(void)startCameraOrPhoto:(TARPhotoSourceWay)photoSourceWay;
 
 
 @end

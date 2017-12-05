@@ -7,6 +7,7 @@
 //
 
 #import "TARCameraAndPhoto.h"
+#import "TAR_AlertController.h"
 
 @interface TARCameraAndPhoto ()
 {
@@ -19,42 +20,77 @@
 {
     self = [super init];
     if (self) {
-        NSLog(@"- (instancetype)init");
-        _photoLibraryType = TAR_PhotoLibraryType_SingleSelect;//默认单选
-        _sourceLibraryType = CameraAndPhotoLibrarySourceWay_PhotoLibrary;//默认PhotoLibrary
-        _allowsEditing = NO;//默认NO
-        self.imageNumberMin = 1;
-        
-
+        [self initialize];
     }
     return self;
 }
 
-+ (void)initialize
+-(void)initialize
 {
-    if (self == [self class]) {
-        NSLog(@"+ (void)initialize");
-        
-    }
-}
--(void)setImageNumberMin:(NSUInteger)imageNumberMin
-{
-    _imageNumberMax = imageNumberMin;
-    _imageNumberMax = imageNumberMin;
+    _photoSelectWay = TARPhotoSelectWay_Single;//默认单选
+    _sourceLibraryType = TARPhotoSourceWay_Photo;//默认PhotoLibrary
+    _allowsEditing = NO;//默认NO
+    self.imageNumberMax = 9;
 }
 
 /**
- 照相机和相册
+ 弹出选择菜单Alert，照相机和相册
  */
--(void)startCameraAndPhotoLibrary:(UIViewController *)targetVC
+-(void)startAlertCameraAndPhoto
 {
-    _targetVC = targetVC;
+    NSArray *actionArray = @[@{@"title":@"取消",@"style":@"1"},@{@"title":@"照相机",@"style":@"2"},@{@"title":@"通过相册",@"style":@"2"}];
+    [TAR_AlertController alertTitle:@"请选择图片方式：" mesasge:nil preferredStyle:UIAlertControllerStyleActionSheet actionArray:actionArray viewController:_targetVC confirmHandler:^(UIAlertAction *action1) {
+        if ([action1.title isEqualToString:@"照相机"]) {
+            [self takePhoto];
+        }else if ([action1.title isEqualToString:@"通过相册"]) {
+            [self localPhoto];
+        }else{
+            
+        }
+    }];
+}
+/**
+ 弹出选择菜单Alert，仅照相机
+ */
+-(void)startAlertCamera
+{
+    NSArray *actionArray = @[@{@"title":@"取消",@"style":@"1"},@{@"title":@"照相机",@"style":@"2"}];
+    [TAR_AlertController alertTitle:@"请选择图片方式：" mesasge:nil preferredStyle:UIAlertControllerStyleActionSheet actionArray:actionArray viewController:_targetVC confirmHandler:^(UIAlertAction *action1) {
+        if ([action1.title isEqualToString:@"照相机"]) {
+            [self takePhoto];
+        }else{
+            
+        }
+    }];
+}
+/**
+ 弹出选择菜单Alert，仅相册
+ */
+-(void)startAlertPhoto
+{
+    NSArray *actionArray = @[@{@"title":@"取消",@"style":@"1"},@{@"title":@"通过相册",@"style":@"2"}];
+    [TAR_AlertController alertTitle:@"请选择图片方式：" mesasge:nil preferredStyle:UIAlertControllerStyleActionSheet actionArray:actionArray viewController:_targetVC confirmHandler:^(UIAlertAction *action1) {
+        if ([action1.title isEqualToString:@"通过相册"]) {
+            [self localPhoto];
+        }else{
+            
+        }
+    }];
+}
+
+
+/**
+ 开启选择图片，通过照相机或者相册
+ */
+-(void)startCameraOrPhoto:(TARPhotoSourceWay)photoSourceWay
+{
+    _sourceLibraryType = photoSourceWay;
     switch (_sourceLibraryType) {
-        case CameraAndPhotoLibrarySourceWay_Camera:
+        case TARPhotoSourceWay_Camera:
             [self takePhoto];
             
             break;
-        case CameraAndPhotoLibrarySourceWay_PhotoLibrary:
+        case TARPhotoSourceWay_Photo:
             [self localPhoto];
             break;
             
@@ -64,32 +100,15 @@
     
 }
 
-/**
- 仅照相机
- */
--(void)startCamera:(id)targetVC
-{
-    _targetVC = targetVC;
-    [self takePhoto];
-}
-
-/**
- 仅相册
- */
--(void)startPhotoLibrary:(id)targetVC
-{
-    _targetVC = targetVC;
-    [self localPhoto];
-}
 
 #pragma mark -- 打开相册上传单张图片
 -(void)localPhoto
 {
-    switch (_photoLibraryType) {
-        case TAR_PhotoLibraryType_SingleSelect:
+    switch (_photoSelectWay) {
+        case TARPhotoSelectWay_Single:
             [self singleSelectPhoto];
             break;
-        case TAR_PhotoLibraryType_MoreSelect:
+        case TARPhotoSelectWay_More:
             [self moreSelectphoto];
             break;
             
@@ -97,17 +116,18 @@
             break;
     }
 }
+
 #pragma mark --单选图片--
 -(void)singleSelectPhoto
 {
-    _imagePicker = [[UIImagePickerController alloc]init];
-    _imagePicker.delegate = _delegate;
+    UIImagePickerController *_imagePicker = [[UIImagePickerController alloc]init];
+    _imagePicker.delegate = _imagePickerDelegate;
     //资源类型为图片库
     _imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     _imagePicker.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     //设置选择后的图片可被编辑
     _imagePicker.allowsEditing = _allowsEditing;
-//    _delegate = _picker.delegate;
+    //    _delegate = _picker.delegate;
     [_targetVC presentViewController:_imagePicker animated:YES completion:^{
     }];
 }
@@ -116,7 +136,7 @@
 {
     WHC_PictureLisVC * vc =[[WHC_PictureLisVC alloc]init];
     vc.maxChoiceImageNumberumber = _imageNumberMax;//最大上传图片数量
-    vc.delegate = _delegate;
+    vc.delegate = _WHCDelegate;
     [_targetVC presentViewController:[[UINavigationController alloc] initWithRootViewController:vc] animated:YES completion:nil];
 }
 
@@ -129,7 +149,7 @@
     //判断是否有相机
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = _delegate;
+        picker.delegate = self;
         //设置拍照后的图片可被编辑
         picker.allowsEditing = _allowsEditing;
         //资源类型为照相机
@@ -146,13 +166,8 @@
 
 
 
-
-
-
-
-
 #pragma mark --UIImagePickerControllerDelegate--
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(nonnull NSDictionary<NSString *,id> *)info
 {
     NSLog(@"imagePickerController");
     [picker dismissViewControllerAnimated:YES completion:^{
@@ -160,36 +175,14 @@
         UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
         //当图片不为空时显示图片并保存图片
         if (image != nil) {
-            //            NSString *str = [NSString stringWithFormat:image];
-            //            _imageView.image = image;
             NSArray *array = [NSArray arrayWithObject:image];
             NSLog(@"_imageView.image ==%@",image);
-//            [self uploadImagesRequestWithImageArray:array];//去到上传图片方法
-            
-            //如果uploadImageType == 1走单张图片上传,2走多图上传
-            //            if (uploadImageType == 1) {
-            //                [self uploadImageRequest:image];
-            //            }else if (uploadImageType == 2){
-            //                [self uploadImagesRequestWithImageArray:[NSMutableArray arrayWithObject:image]];
-            //            }
-            
-            //执行上传图片
-            //调js
-            //            NSString * alertJS = [NSString stringWithFormat:@"loadUploadImgDataShow('%@','%@')",objDic[@"id"],objDic[@"iconPath"]];
-            //            [_context evaluateScript:alertJS];
         }
     }];
 }
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     NSLog(@"imagePickerControllerDidCancel");
-}
-
-
-
--(void)WHCChoicePictureVC:(WHC_ChoicePictureVC *)choicePictureVC didSelectedPhotoArr:(NSArray *)photoArr
-{
-    NSLog(@"WHCChoicePictureVC");
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -199,7 +192,13 @@
 -(void)alertViewCancel:(UIAlertView *)alertView
 {
     NSLog(@"alertViewCancel");
-
+    
 }
+
+-(void)WHCChoicePictureVC:(WHC_ChoicePictureVC *)choicePictureVC didSelectedPhotoArr:(NSArray *)photoArr
+{
+    NSLog(@"WHCChoicePictureVC");
+}
+
 
 @end
