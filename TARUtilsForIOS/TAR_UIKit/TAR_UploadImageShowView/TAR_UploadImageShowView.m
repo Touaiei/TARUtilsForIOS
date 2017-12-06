@@ -175,6 +175,12 @@
     return _uploadImageBGView.height;
 }
 
-@end
+-(NSInteger)getCanImageNumber
+{
+    _canImageNumber = _maxImageNumber - _imagesArrayTotal.count;
+    return _canImageNumber;
+}
 
+
+@end
 

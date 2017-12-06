@@ -36,14 +36,32 @@
 @property(nonatomic, strong)NSMutableArray<TARUploadImageViewItemModel *> *imagesArrayTotal;//所以图片总数组
 @property(nonatomic, strong)NSArray<TARUploadImageViewItemModel *> *imagesArraySingle;//每次上传图片数组
 @property(nonatomic, assign)NSInteger maxImageNumber;//图片最大数量
+@property(nonatomic, assign, readonly)NSInteger canImageNumber;//剩余可传图片数量
 
 
 /**
  显示图片，并改变frame
  */
 -(void)showImagesWithImageArray:(NSArray<TARUploadImageViewItemModel *> *)images;
+
+/**
+ 获取 mainView 总的高度
+ @return 总的高度
+ */
 -(CGFloat)getTotalHeight;
+
+/**
+ 获取剩余可传图片数量
+ @return 剩余可传图片数量
+ */
+-(NSInteger)getCanImageNumber;
+
+/**
+ 获取所有图片
+ @return 获取所有图片
+ */
 -(NSArray<TARUploadImageViewItemModel *> *)getTotalImages;
 
 
 @end
+
