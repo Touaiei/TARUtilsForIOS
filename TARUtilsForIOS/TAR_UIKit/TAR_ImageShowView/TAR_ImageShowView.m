@@ -13,7 +13,6 @@
 {
     UIView *imageBGView;
     NSMutableArray *imageViews;
-    NSMutableArray *images;
 }
 //@property(nonatomic,strong)UIImageView *imageView;
 
@@ -55,10 +54,6 @@
     if (!imageViews) {
         imageViews = [[NSMutableArray alloc]init];
     }
-    if (!images) {
-        images = [[NSMutableArray alloc]init];
-    }
-    
     _self_MaxW = [UIScreen mainScreen].bounds.size.width;
     _self_W = self.bounds.size.width;
     _self_H = self.bounds.size.height;
@@ -77,7 +72,7 @@
     }
 }
 
--(void)showVerticalImageWithImagesPath:(NSArray<NSString *> *)imagesPath completed:(void (^)(CGSize))block
+-(void)showVerticalImageWithImagesPath:(NSArray<TARImageShowView_CellModel *> *)imagesPath completed:(void (^)(CGSize))block
 {
     __block CGFloat imageBGViewMaxW = 0.0;
     __block CGFloat imageBGViewMaxH = 0.0;
@@ -89,13 +84,17 @@
         __block CGFloat contentImageView_H = 0.0;
         CGFloat imageHeadSpace = 0.0;
         for (int i = 0; i<imagesPath.count; i++) {
-            if ([imagesPath[i] length] >= 1) {
+            
+            TARImageShowView_CellModel *model = [imagesPath objectAtIndex:i];
+            
+            
+            if ([model.imagePath length] >= 1) {
                 if (i == 0) {//设置内容图片顶部间距
                     imageHeadSpace = 0;
                 }else{
                     imageHeadSpace = 10;
                 }
-                NSString *urlStr = [imagesPath[i] isKindOfClass:[NSString class]]?imagesPath[i]:@"";
+                NSString *urlStr = [model.imagePath isKindOfClass:[NSString class]]?model.imagePath:@"";
                 UIImageView *imageView = [[UIImageView alloc]init];
                 imageView.tag = i;
                 imageView.userInteractionEnabled = YES;
@@ -188,6 +187,7 @@
 @interface TARImageShowKyushuView()
 {
     UIView *_backgroundView;
+    NSMutableArray *_imageViews;
 }
 @end
 @implementation TARImageShowKyushuView
@@ -225,6 +225,10 @@
     _imageWidth = (self.bounds.size.width-(_levelSpace*(_rowShowNumber-1)))/_rowShowNumber;//图片宽度（默认平分）
     _imageHeight = _imageWidth;//图片高度（默认平分）
     
+    if (_imageViews) {
+        _imageViews = [[NSMutableArray alloc]init];
+    }
+    
     [self initBackgroundView];
 }
 -(void)setRowShowNumber:(CGFloat)rowShowNumber
@@ -237,10 +241,9 @@
 -(void)initBackgroundView
 {
     _backgroundView = [[UIView alloc]initWithFrame:self.bounds];
-    _backgroundView.backgroundColor = [UIColor whiteColor];
     [self addSubview:_backgroundView];
 }
--(void)showSquareImageWithImagePaths:(NSArray<NSString *> *)imagePaths completed:(void (^)(CGSize))block
+-(void)showSquareImageWithImagePaths:(NSArray<TARImageShowView_CellModel *> *)imagePaths completed:(void (^)(CGSize))block
 {
     int columnsNumber = _rowShowNumber;//列数（每行item个数）
     int columnSpacing = 5;//列间距
@@ -252,32 +255,41 @@
         _cellImageView.backgroundColor = [UIColor lightGrayColor];
         _cellImageView.userInteractionEnabled = YES;
         [_backgroundView addSubview:_cellImageView];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deleteImageButtonTap:)];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imageTap:)];
         [_cellImageView addGestureRecognizer:tap];
         
-        NSString *imagePath = [imagePaths objectAtIndex:i];
+        TARImageShowView_CellModel *model = [imagePaths objectAtIndex:i];
+        NSString *imagePath = model.imagePath;
         if ([imagePath hasPrefix:@"http"]) {
             [_cellImageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:nil];
-
         }else{
             _cellImageView.image = [UIImage imageNamed:imagePath];
         }
+        
+        [_imageViews addObject:_cellImageView];
+
         _backgroundView.height = rowNumber*_imageHeight+(rowNumber-1)*_verticalSpace;//从新指定背景视图高度
     }
     CGSize size = CGSizeMake(_backgroundView.width, _backgroundView.height);
     block(size);
-    
-    
-//    self.layoutCallback(_backgroundView.height);
 }
 
-
-
-
+-(void)imageTap:(UITapGestureRecognizer *)tap
+{
+    NSUInteger index = tap.view.tag;
+    self.imageClickCallback(_imageViews, index);
+}
 @end
 
 
 
+
+/**
+ 图片CellModel
+ */
+@implementation TARImageShowView_CellModel
+
+@end
 
 
 
