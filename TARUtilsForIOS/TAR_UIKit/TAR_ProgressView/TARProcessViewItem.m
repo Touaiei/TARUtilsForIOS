@@ -48,7 +48,7 @@
     NSString *timeName = _itemModel.title;
     UILabel *progressTimeLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, cellLeftViewTopPadding, 39, 20)];
     progressTimeLabel.text = timeName;
-    progressTimeLabel.textColor = Color_MainGreen;
+    progressTimeLabel.textColor = Color_MoreBlueColor;
     progressTimeLabel.font = [UIFont systemFontOfSize:14.0];
     [cellLeftView addSubview:progressTimeLabel];
     
@@ -67,7 +67,7 @@
     UIImageView *cellLeftViewImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(cellLeftView.frame)-cellLeftView_ImageView_W_H, 15, cellLeftView_ImageView_W_H, cellLeftView_ImageView_W_H)];
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetWidth(cellLeftView.frame)-10, 0, 1, cellLeftView.height )];
     lineView.centerX = cellLeftViewImageView.centerX;
-    lineView.backgroundColor = Color_TableViewCellSeparator;
+    lineView.backgroundColor = [UIColor lightGrayColor];
     [cellLeftView addSubview:lineView];
     [cellLeftView addSubview:cellLeftViewImageView];
 
@@ -101,7 +101,7 @@
     UILabel *_positionLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, cellRightViewTopPadding, progressCellPositionLabel_W, progressCellPositionLabel_H)];
     _positionLabel.font = FontSize_14;
     _positionLabel.text = progressCellPositionName;
-    _positionLabel.textColor = Color_YellowText;
+    _positionLabel.textColor = [UIColor yellowColor];
     [cellRightView addSubview:_positionLabel];
     if (_isShowCellLeftViewImageView == NO) {
         lineView.hidden = YES;

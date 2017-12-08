@@ -62,10 +62,10 @@
     CGFloat progressCellView_Y=0.0;//processCellView 的Y坐标
     CGFloat progressCellView_BeforeHeight = 0.0;//上一个 processCellView 的高度
     for (int i = 0; i<_progressDataArray.count; i++) {
-        TAR_ProgressItemModel *model = [_progressDataArray objectAtIndex:i];
+        ComplaintProgressViewCellModel *model = [_progressDataArray objectAtIndex:i];
         CGFloat repairProgressCellView_W = _repairProgressBGView.width;
         CGFloat processCellView_H = 0.0;
-        TARProcessViewItem *processCellView = [[TARProcessViewItem alloc]initWithFrame:CGRectMake(0, 0, repairProgressCellView_W, processCellView_H)];
+        ComplaintProgressViewCell *processCellView = [[ComplaintProgressViewCell alloc]initWithFrame:CGRectMake(0, 0, repairProgressCellView_W, processCellView_H)];
         processCellView.row = i;
         processCellView.isShowCellLeftViewImageView = YES;
         [_repairProgressBGView addSubview:processCellView];
@@ -95,7 +95,7 @@
     [_repairProgressBGView setContentSize:CGSizeMake(_repairProgressBGView.width, cContent_H)];
 }
 
--(void)initProgressViewWithDatas:(NSArray<TAR_ProgressItemModel *> *)datas
+-(void)initProgressViewWithDatas:(NSArray<ComplaintProgressViewCellModel *> *)datas
 {
     _progressDataArray = datas;
     [self initRepairProgressView];
