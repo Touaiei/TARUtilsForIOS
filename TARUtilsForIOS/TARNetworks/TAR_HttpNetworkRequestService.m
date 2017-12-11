@@ -418,7 +418,6 @@
     blankContentView.imageViewSize = CGSizeMake(100, 100);
     blankContentView.promptText = @"暂无内容~_~!";
     [blankContentView initInterfaceBuilder];
-//            blankContentView.backgroundColor = [UIColor redColor];
     [tableView addSubview:blankContentView];
     [blankContentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(tableView);
@@ -430,6 +429,9 @@
         tableView.mj_footer.hidden = NO;
     }else{
         if (pageIndex == 1) {
+            tableView.mj_footer.hidden = YES;
+            [blankContentView setHidden:NO];
+            /*
             if (datas.count < 1) {
                 tableView.mj_footer.hidden = YES;
                 [blankContentView setHidden:NO];
@@ -437,6 +439,7 @@
                 tableView.mj_footer.hidden = NO;
                 [blankContentView setHidden:YES];
             }
+            */
         }else{
             tableView.mj_footer.hidden = NO;
             [blankContentView setHidden:YES];
