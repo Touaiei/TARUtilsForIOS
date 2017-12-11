@@ -56,9 +56,12 @@
 @interface ComplaintProgressViewCellRightView : UIView
 @property(nonatomic, strong)UILabel *titleLabel;
 @property(nonatomic, strong)UILabel *timeLabel;
-
 @property(nonatomic, copy)NSString *titleName;
 @property(nonatomic, copy)NSString *timeName;
+
+@property(nonatomic, assign)BOOL isFirst;
+@property(nonatomic, assign)BOOL isLast;
+@property(nonatomic, assign)NSUInteger index;
 
 -(CGFloat)getViewTotal_H;
 -(void)interfaceBuilder;
