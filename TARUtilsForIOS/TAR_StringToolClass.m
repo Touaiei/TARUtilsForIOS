@@ -803,7 +803,7 @@
  @param index2 索引2
  @return 返回交换后的新数组，如果交换失败则返回原数组
  */
--(NSMutableArray *)arrayExchangeObjectWithArray:(NSMutableArray *)array atIndex1:(NSUInteger)index1 atIndex2:(NSUInteger)index2
++(NSMutableArray *)arrayExchangeObjectWithArray:(NSMutableArray *)array atIndex1:(NSUInteger)index1 atIndex2:(NSUInteger)index2
 {
     if (array.count > index1 && array.count > index2) {
         [array exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
@@ -819,7 +819,7 @@
  @param string string字符串
  @return 转换后数组
  */
--(NSArray *)stringToArrayWithString:(NSString *)string
++(NSArray *)stringToArrayWithString:(NSString *)string
 {
     if (![string containsString:@","]) {
         return [[NSArray alloc]init];
@@ -834,12 +834,24 @@
  @param array array数组
  @return 转换后字符串
  */
--(NSString *)arrayToStringWithArray:(NSArray *)array
++(NSString *)arrayToStringWithArray:(NSArray *)array
 {
     NSString *string = [array componentsJoinedByString:@","];//分隔符逗号
     return string;
 }
 
+
+/**
+ 将ISO8859_1字符串转换为UTF8字符串
+ @param iSO8859_1String 传入的ISO8859_1字符串
+ @return 返回的UTF8字符串
+ */
++(NSString *)ISO8859_1StringToUTF8String:(NSString *)iSO8859_1String
+{
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingISOLatin1);
+    
+    return [NSString stringWithUTF8String:[iSO8859_1String cStringUsingEncoding:enc]];
+}
 
 @end
 

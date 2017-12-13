@@ -208,24 +208,29 @@ typedef NS_ENUM(NSInteger, FontSize){
  @param index2 索引2
  @return 返回交换后的新数组，如果交换失败则返回原数组
  */
--(NSMutableArray *_Nonnull)arrayExchangeObjectWithArray:(NSMutableArray *_Nonnull)array atIndex1:(NSUInteger)index1 atIndex2:(NSUInteger)index2;
++(NSMutableArray *_Nonnull)arrayExchangeObjectWithArray:(NSMutableArray *_Nonnull)array atIndex1:(NSUInteger)index1 atIndex2:(NSUInteger)index2;
 
 /**
  //将string字符串转换为array数组
  @param string string字符串
  @return 转换后数组
  */
--(NSArray *_Nonnull)stringToArrayWithString:(NSString *_Nonnull)string;
++(NSArray *_Nonnull)stringToArrayWithString:(NSString *_Nonnull)string;
 
 /**
  //将array数组转换为string字符串,分割符是','
  @param array array数组
  @return 转换后字符串
  */
--(NSString *_Nonnull)arrayToStringWithArray:(NSArray *_Nonnull)array;
++(NSString *_Nonnull)arrayToStringWithArray:(NSArray *_Nonnull)array;
 
 
-
+/**
+ 将ISO8859_1字符串转换为UTF8字符串
+ @param iSO8859_1String 传入的ISO8859_1字符串
+ @return 返回的UTF8字符串
+ */
++(NSString *)ISO8859_1StringToUTF8String:(NSString *)iSO8859_1String;
 
 @end
 
