@@ -12,6 +12,7 @@
 
 @property(nonatomic, copy)NSString *name;//项名称
 
+@property(nonatomic, copy)NSString *ID;//项ID
 
 
 @end
