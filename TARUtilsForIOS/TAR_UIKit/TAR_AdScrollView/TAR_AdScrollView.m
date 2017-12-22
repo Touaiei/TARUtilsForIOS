@@ -227,9 +227,9 @@ typedef NS_ENUM(NSInteger,AdJumpToTarget) {
 #pragma mark --描述文本显示的内容
 -(void)describeTextContent
 {
-    NSInteger bbb = _pageControl.currentPage;
-    //
-    TARScrollViewItemModel *itemModel = [itemDataArray objectAtIndex:bbb];
+    NSInteger currentPage = _pageControl.currentPage;
+    int count = (int)itemDataArray.count;
+    TARScrollViewItemModel *itemModel = count-1 >= currentPage ? [itemDataArray objectAtIndex:currentPage]:[TARScrollViewItemModel new];
     NSString *describeStr = itemModel.title;
     _describeTextLabel.text = describeStr;
 }
