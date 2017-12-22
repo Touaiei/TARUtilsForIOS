@@ -199,29 +199,28 @@ typedef NS_ENUM(NSInteger,AdJumpToTarget) {
 #pragma mark - ----- -> 初始化添加广告图片
 - (void)AddAdImg:(NSArray <TARScrollViewItemModel *> *)arr_adimgs
 {
-    for (int i = 0; i < ([arr_adimgs count]>0?[arr_adimgs count]:0); ++i)
-    {
-        UIImageView *img_Ad = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*i, 0.f, self.frame.size.width, self.frame.size.height)];
-        NSString *imageUrl;
-        if (i < arr_adimgs.count) {
-            TARScrollViewItemModel *itemModel = [arr_adimgs objectAtIndex:i];
-            imageUrl = [NSString stringWithFormat:@"%@",itemModel.imagePath];
-        }else{
-            imageUrl = @"";
+    if ([arr_adimgs count]>0) {
+        for (int i = 0; i < ([arr_adimgs count]>0?[arr_adimgs count]:0); ++i)
+        {
+            UIImageView *img_Ad = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*i, 0.f, self.frame.size.width, self.frame.size.height)];
+            NSString *imageUrl;
+            if (i < arr_adimgs.count) {
+                TARScrollViewItemModel *itemModel = [arr_adimgs objectAtIndex:i];
+                imageUrl = [NSString stringWithFormat:@"%@",itemModel.imagePath];
+            }else{
+                imageUrl = @"";
+            }
+            if ([imageUrl hasPrefix:@"http"]) {
+                [img_Ad sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:Macro_PlaceholderImage];
+            }else{
+                [img_Ad setImage:[UIImage imageNamed:imageUrl]];
+            }
+            [img_Ad setTag:ADIMG_INDEX+i];
+            [img_Ad setUserInteractionEnabled:YES];
+            [_AD_ScrollView addSubview:img_Ad];
         }
-        if ([imageUrl hasPrefix:@"http"]) {
-            [img_Ad sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:Macro_PlaceholderImage];
-        }else{
-            [img_Ad setImage:[UIImage imageNamed:imageUrl]];
-        }
-        [img_Ad setTag:ADIMG_INDEX+i];
-        [img_Ad setUserInteractionEnabled:YES];
-        [_AD_ScrollView addSubview:img_Ad];
+        [self startTimer];
     }
-
-    [self startTimer];
-
-//    [self createMoneyIcon];
 }
 
 #pragma mark --描述文本显示的内容
