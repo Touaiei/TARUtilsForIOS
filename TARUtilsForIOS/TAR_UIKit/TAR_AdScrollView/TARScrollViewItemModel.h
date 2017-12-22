@@ -14,7 +14,7 @@
 
 @property(nonatomic, copy)NSString *imagePath;//图片地址
 
-@property(nonatomic, copy)NSString *title;//图片地址
+@property(nonatomic, copy)NSString *title;//文字标题
 
 @property(nonatomic, copy)NSString *url;//点击跳转地址
 
