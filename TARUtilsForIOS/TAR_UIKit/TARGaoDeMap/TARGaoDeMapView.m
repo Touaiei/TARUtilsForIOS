@@ -12,10 +12,11 @@
 
 
 @interface TARGaoDeMapView()
+<MAMapViewDelegate>
 {
     MAMapView *_mapView;//地图View
-    MAPointAnnotation *_pointAnnotation;//大头针
-
+    
+    NSArray<MAPointAnnotation *> *_pointAnnotations;//一组大头针
 }
 
 
@@ -28,7 +29,7 @@
     self = [super init];
     if (self) {
         [self initialize];
-
+        
     }
     return self;
 }
@@ -47,20 +48,23 @@
     self = [super initWithCoder:coder];
     if (self) {
         [self initialize];
-
+        
     }
     return self;
 }
 
 -(void)initialize
 {
-    _isShowPoint = YES;
-    _isLockedPointToScreen = YES;
-    _isLockedPointToScreenCenter = YES;
+    _isShowLockPoint = YES;
+    _isShowUserLocationMark = YES;
+    
 }
 
 -(void)initInterfaceBuild
 {
+    [self.superview setNeedsLayout];
+    [self.superview layoutIfNeeded];
+    
     [self initMAMapView];
 }
 
@@ -74,17 +78,18 @@
     [AMapServices sharedServices].enableHTTPS = NO;
     ///初始化地图
     _mapView = [[MAMapView alloc] initWithFrame:self.bounds];
-    _mapView.delegate = _mapViewDelegate;
+    _mapView.delegate = self;
     _mapView.showsCompass = NO;//是否显示罗盘，默认为YES
     _mapView.showsScale = NO;//是否显示比例尺，默认为YES
     ///把地图添加至view
     [self addSubview:_mapView];
     
     
-    [self addUserLocationMark];
-    
-    if (_isShowPoint) {
-        [self initMAPointAnnotation];
+    if (_isShowUserLocationMark) {
+        [self addUserLocationMark];
+    }
+    if (_isShowLockPoint) {
+        [self initLockPointPointAnnotation];
     }
 }
 -(void)addUserLocationMark
@@ -94,30 +99,14 @@
     _mapView.userTrackingMode = MAUserTrackingModeFollow;
     
 }
--(void)initMAPointAnnotation
+-(void)initLockPointPointAnnotation
 {
     /*如果您需要显示大头针需添加PointAnnotation*/
-    [self.superview setNeedsLayout];
-    [self.superview layoutIfNeeded];
     
-    CGFloat pointAnnotation_Center_X = self.width/2.0;
-    CGFloat pointAnnotation_Center_Y = self.height/2.0;
-    _pointAnnotation = [[MAPointAnnotation alloc] init];
-    _pointAnnotation.title = @"方恒国际";
-    _pointAnnotation.subtitle = @"阜通东大街6号";
-//    _pointAnnotation.coordinate = CLLocationCoordinate2DMake(_mapView.centerCoordinate.latitude, _mapView.centerCoordinate.longitude);
-
-    [_mapView addAnnotation:_pointAnnotation];
-    
-    
-    NSLog(@"pointAnnotation.coordinate1==%f   %f",_pointAnnotation.coordinate.latitude,_pointAnnotation.coordinate.longitude);
-    NSLog(@"mapView.userLocation.location1==%f   %f",_mapView.userLocation.location.coordinate.latitude,_mapView.userLocation.location.coordinate.longitude);
-    NSLog(@"mapView.centerCoordinate1==%f   %f",_mapView.centerCoordinate.latitude,_mapView.centerCoordinate.longitude);
-    
-    
-    
-    
-    //        [self setddMapViewCenterCoordinates:_pointAnnotation.coordinate];
+    MAPointAnnotation *lockPoint = [[MAPointAnnotation alloc] init];
+    lockPoint.lockedToScreen = YES;
+    lockPoint.lockedScreenPoint = self.center;
+    [_mapView addAnnotation:lockPoint];
 }
 
 
@@ -125,6 +114,9 @@
 #pragma mark --MAMapViewDelegate--
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id <MAAnnotation>)annotation
 {
+    if ([annotation isKindOfClass:[MAUserLocation class]]) {
+        return nil;
+    }
     if ([annotation isKindOfClass:[MAPointAnnotation class]]){
         static NSString *pointReuseIndentifier = @"pointReuseIndentifier";
         MAPinAnnotationView *annotationView = (MAPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:pointReuseIndentifier];
@@ -134,8 +126,14 @@
         }
         annotationView.canShowCallout= YES;       //设置气泡可以弹出，默认为NO
         annotationView.animatesDrop = YES;        //设置标注动画显示，默认为NO
-        annotationView.draggable = YES;        //设置标注可以拖动，默认为NO
-        annotationView.pinColor = MAPinAnnotationColorPurple;
+        annotationView.draggable = NO;        //设置标注可以拖动，默认为NO
+        //        annotationView.pinColor = MAPinAnnotationColorPurple;
+        if ([annotation.title isEqualToString:@"垃圾箱"]) {
+            annotationView.image = [UIImage imageNamed:@"my_query_date"];
+        }else if ([annotation.title isEqualToString:@"清运车"]) {
+            annotationView.image = [UIImage imageNamed:@"work_location_ic"];
+        }else{
+        }
         return annotationView;
     }
     return nil;
@@ -143,53 +141,34 @@
 
 
 
-
-
-
-
-
--(void)setPointLocationCoordinate:(CLLocationCoordinate2D)pointLocationCoordinate
+-(void)addAnnotationsPointLocationCoordinates:(NSArray *)coordinates annotationTypeNmae:(NSString *)annotationTypeNmae
 {
-    _pointLocationCoordinate = pointLocationCoordinate;
-    _pointAnnotation.coordinate = _pointLocationCoordinate;
-}
-
-
-
-
-
-
--(void)setIsLockedPointToScreenCenter:(BOOL)isLockedPointToScreenCenter
-{
-    _isLockedPointToScreenCenter = isLockedPointToScreenCenter;
-    if (_isLockedPointToScreenCenter == YES) {
-        if (_isLockedPointToScreen == YES) {
-            [self setIsLockedPointToScreen:_isLockedPointToScreenCenter];
-            [self setPointScreenCoordinate:self.center];
-        }
+    NSMutableArray *annotations = [[NSMutableArray alloc]init];
+    for (int i=0; i<coordinates.count; i++) {
+        NSValue *coordinateValue = [coordinates objectAtIndex:i];
+        CLLocationCoordinate2D coordinate = [coordinateValue MACoordinateValue];
+        MAPointAnnotation *pointAnnotation = [[MAPointAnnotation alloc]init];
+        pointAnnotation.coordinate = coordinate;
+        pointAnnotation.title = annotationTypeNmae;
+        [annotations addObject:pointAnnotation];
     }
+    _pointAnnotations = (NSArray *)annotations;
+    
+    [_mapView addAnnotations:_pointAnnotations];
 }
 
--(void)setIsLockedPointToScreen:(BOOL)isLockedPointToScreen
-{
-    _isLockedPointToScreen = isLockedPointToScreen;
-    _pointAnnotation.lockedToScreen = _isLockedPointToScreen;//大头针是否固定到屏幕上
-}
--(void)setPointScreenCoordinate:(CGPoint)pointScreenCoordinate
-{
-    _pointScreenCoordinate = pointScreenCoordinate;
-    if (_isLockedPointToScreen == YES) {
-        _pointAnnotation.lockedScreenPoint = _pointScreenCoordinate;//大头针固定到屏幕上的坐标点
-    }
-}
+
+
+
+
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end

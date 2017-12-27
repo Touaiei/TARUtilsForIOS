@@ -14,12 +14,16 @@
 
 @interface TARGaoDeMapView : UIView
 @property (nonatomic, weak) id<MAMapViewDelegate> mapViewDelegate;//地图View的代理
+//@property (nonatomic, assign)CLLocationCoordinate2D pointLocationCoordinate;//大头针在地图上的地理坐标
+@property (nonatomic, assign)BOOL isShowLockPoint;//是否显示固定在地图中心的大头针(默认 YES)
+@property (nonatomic, assign)BOOL isShowUserLocationMark;//是否显示用户当前位置标记(默认 YES)
 
-@property (nonatomic, assign)CLLocationCoordinate2D pointLocationCoordinate;//大头针在地图上的地理坐标
-@property (nonatomic, assign)BOOL isShowPoint;//是否显示大头针(默认 YES)
-@property (nonatomic, assign)BOOL isLockedPointToScreen;//是否固定大头针到地图View上(默认 YES)
-@property (nonatomic, assign)BOOL isLockedPointToScreenCenter;//是否固定大头针到地图View中心(默认 YES)
-@property (nonatomic, assign)CGPoint pointScreenCoordinate;//大头针固定在地图View上的位置
+
+/**
+ 添加一组注释点
+ @param coordinates 一组坐标点
+ */
+-(void)addAnnotationsPointLocationCoordinates:(NSArray *)coordinates annotationTypeNmae:(NSString *)annotationTypeNmae;
 
 
 -(void)initInterfaceBuild;
