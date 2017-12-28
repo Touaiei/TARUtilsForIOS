@@ -49,12 +49,50 @@ typedef NS_ENUM(NSInteger, TAR_DatePickerReturnStyle) {
 -(void)startDatePickerWithTarget:(_Nonnull id)target confirmHandler:(void(^_Nonnull)(NSString * _Nonnull date))confirmHandler;
 
 
+
+
+
 /**
- 替换日期当中出现的字符串（具体看源码）
- @param dateStr 日期源
- @return 返回替换好的新日期
+ 获取当前的日期
+ @return 返回格式为（yyyy-MM-dd）
  */
--(NSString *_Nonnull)replaceDateSeparator:(NSString *_Nonnull)dateStr;
++(NSString *_Nonnull)getCurrentDate;
+
+/**
+ 获取当前的时间
+ @return 返回格式为（HH:mm:ss）
+ */
++(NSString *_Nonnull)getCurrentTime;
+
+/**
+ 日期格式转换 @"yyyy年MM月dd日" TO @"yyyy-MM-dd"
+ @param dateStr 日期字符串
+ @return @"yyyy-MM-dd"
+ */
++(NSString *_Nonnull)dateFormatConversionForTextToHorizontalLine:(NSString *_Nonnull)dateStr;
+
+/**
+ 日期格式转换 @"yyyy-MM-dd" TO @"yyyy年MM月dd日"
+ @param dateStr 日期字符串
+ @return @"yyyy年MM月dd日"
+ */
++(NSString *_Nonnull)dateFormatConversionForHorizontalLineToText:(NSString *_Nonnull)dateStr;
+
+/**
+ 时间格式转换 @"HH:mm:ss" TO @"HH时mm分ss秒"
+ @param timeStr 日期字符串
+ @return @"HH时mm分ss秒"
+ */
++(NSString *_Nullable)timeFormatConversionForColonToText:(NSString *_Nonnull)timeStr;
+
+/**
+ 时间格式转换 @"HH时mm分ss秒" TO @"HH:mm:ss"
+ @param timeStr 日期字符串
+ @return @"HH:mm:ss"
+ */
++(NSString *_Nonnull)timeFormatConversionForTextToColon:(NSString *_Nonnull)timeStr;
+
+
 
 @end
 

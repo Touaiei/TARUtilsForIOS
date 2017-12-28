@@ -120,7 +120,7 @@ UIAlertViewDelegate
     UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:aaa];
     datePicker.datePickerMode = (UIDatePickerMode)_datePickerMode;
     datePicker.minimumDate = _minimumDate;
-    datePicker.maximumDate = _maximumDate;    
+    datePicker.maximumDate = _maximumDate;
     
     NSTimeInterval dateTimeInterval = [self dateConverter:_dateOrTime dateFormat:_dateOrTimeFormat];
     if (dateTimeInterval == 0 || [TAR_StringToolClass isEqualEmptyWithString:_dateOrTime]) {
@@ -131,14 +131,7 @@ UIAlertViewDelegate
     _datePicker = datePicker;
 }
 
--(NSString *)replaceDateSeparator:(NSString *)dateStr;
-{
-    //替换字符串（把"年"替换成"-"）
-    NSString *strUrl = [dateStr stringByReplacingOccurrencesOfString:@"年" withString:@"-"];
-    NSString *strUrl2 = [strUrl stringByReplacingOccurrencesOfString:@"月" withString:@"-"];
-    NSString *strUrl3 = [strUrl2 stringByReplacingOccurrencesOfString:@"日" withString:@""];
-    return strUrl3;
-}
+
 
 #pragma mark --自定义alert视图--
 //IOS8 UIAlertController弹出框中添加视图（例如日期选择器等等）
@@ -186,5 +179,102 @@ UIAlertViewDelegate
     [alertView show];
 }
 #pragma mark --UIAlertViewDelegate--
+
+
+
+
+/**
+ 获取当前的日期
+ @return 返回格式为（yyyy-MM-dd）
+ */
++(NSString *_Nonnull)getCurrentDate
+{
+    NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+    [formater setDateFormat:@"yyyy-MM-dd"];
+    NSDate *curDate = [NSDate date];
+    NSString * curDateStr = [formater stringFromDate:curDate];
+    return curDateStr;
+}
+
+/**
+ 获取当前的时间
+ @return 返回格式为（HH:mm:ss）
+ */
++(NSString *_Nonnull)getCurrentTime
+{
+    NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+    [formater setDateFormat:@"HH:mm:ss"];
+    NSDate *curDate = [NSDate date];
+    NSString * curTimeStr = [formater stringFromDate:curDate];
+    return curTimeStr;
+}
+
+/**
+ 日期格式转换 @"yyyy年MM月dd日" TO @"yyyy-MM-dd"
+ @param dateStr 日期字符串
+ @return @"yyyy-MM-dd"
+ */
++(NSString *)dateFormatConversionForTextToHorizontalLine:(NSString *)dateStr;
+{
+    if (![dateStr containsString:@"年"] || ![dateStr containsString:@"月"] || ![dateStr containsString:@"日"]) {
+        return dateStr;
+    }
+    //替换字符串（把"年 月 日"替换成"-"）
+    NSString *strUrl = [dateStr stringByReplacingOccurrencesOfString:@"年" withString:@"-"];
+    NSString *strUrl2 = [strUrl stringByReplacingOccurrencesOfString:@"月" withString:@"-"];
+    NSString *strUrl3 = [strUrl2 stringByReplacingOccurrencesOfString:@"日" withString:@""];
+    return strUrl3;
+}
+
+/**
+ 日期格式转换 @"yyyy-MM-dd" TO @"yyyy年MM月dd日"
+ @param dateStr 日期字符串
+ @return @"yyyy年MM月dd日"
+ */
++(NSString *)dateFormatConversionForHorizontalLineToText:(NSString *)dateStr
+{
+    if (![dateStr containsString:@"-"]) {
+        return dateStr;
+    }
+    //替换字符串（把"- -"替换成"年 月 日"）
+    NSString *strUrl = [dateStr stringByReplacingOccurrencesOfString:@"-" withString:@"年"];
+    NSString *strUrl2 = [strUrl stringByReplacingOccurrencesOfString:@"-" withString:@"月"];
+    NSString *strUrl3 = [strUrl2 stringByAppendingString:@"日"];
+    return strUrl3;
+}
+
+/**
+ 时间格式转换 @"HH:mm:ss" TO @"HH时mm分ss秒"
+ @param timeStr 日期字符串
+ @return @"HH时mm分ss秒"
+ */
++(NSString *)timeFormatConversionForColonToText:(NSString *)timeStr
+{
+    if (![timeStr containsString:@":"]) {
+        return timeStr;
+    }
+    //替换字符串（把": :"替换成"时 分 秒"）
+    NSString *strUrl = [timeStr stringByReplacingOccurrencesOfString:@":" withString:@"时"];
+    NSString *strUrl2 = [strUrl stringByReplacingOccurrencesOfString:@":" withString:@"分"];
+    NSString *strUrl3 = [strUrl2 stringByAppendingString:@"秒"];
+    return strUrl3;
+}
+
+/**
+ 时间格式转换 @"HH时mm分ss秒" TO @"HH:mm:ss"
+ @param timeStr 日期字符串
+ @return @"HH:mm:ss"
+ */
++(NSString *)timeFormatConversionForTextToColon:(NSString *)timeStr
+{
+    if (![timeStr containsString:@"时"] || ![timeStr containsString:@"分"] || ![timeStr containsString:@"秒"]) {
+        return timeStr;
+    }
+    //替换字符串（把"时 分 秒"替换成": :"）
+    NSString *strUrl = [timeStr stringByReplacingOccurrencesOfString:@"时" withString:@":"];
+    NSString *strUrl2 = [strUrl stringByReplacingOccurrencesOfString:@"分" withString:@":"];
+    NSString *strUrl3 = [strUrl2 stringByReplacingOccurrencesOfString:@"秒" withString:@""];
+    return strUrl3;
+}
 
 @end
