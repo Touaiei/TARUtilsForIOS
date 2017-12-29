@@ -18,13 +18,11 @@
 @property (nonatomic, assign)BOOL isShowLockPoint;//是否显示固定在地图中心的大头针(默认 YES)
 @property (nonatomic, assign)BOOL isShowUserLocationMark;//是否显示用户当前位置标记(默认 YES)
 
-
 /**
- 添加一组注释点
- @param coordinates 一组坐标点
+ 添加一组大头针
+ @param pointAnnotations 一组大头针对象
  */
--(void)addAnnotationsPointLocationCoordinates:(NSArray *)coordinates annotationTypeNmae:(NSString *)annotationTypeNmae;
-
+-(void)addPointAnnotations:(NSArray<MAPointAnnotation *> *)pointAnnotations;
 
 -(void)initInterfaceBuild;
 

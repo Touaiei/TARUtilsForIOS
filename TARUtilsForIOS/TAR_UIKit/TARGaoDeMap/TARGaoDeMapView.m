@@ -10,7 +10,6 @@
  */
 #import "TARGaoDeMapView.h"
 
-
 @interface TARGaoDeMapView()
 <MAMapViewDelegate>
 {
@@ -127,12 +126,17 @@
         annotationView.canShowCallout= YES;       //设置气泡可以弹出，默认为NO
         annotationView.animatesDrop = YES;        //设置标注动画显示，默认为NO
         annotationView.draggable = NO;        //设置标注可以拖动，默认为NO
-        //        annotationView.pinColor = MAPinAnnotationColorPurple;
-        if ([annotation.title isEqualToString:@"垃圾箱"]) {
-            annotationView.image = [UIImage imageNamed:@"my_query_date"];
-        }else if ([annotation.title isEqualToString:@"清运车"]) {
-            annotationView.image = [UIImage imageNamed:@"work_location_ic"];
-        }else{
+        annotationView.pinColor = MAPinAnnotationColorRed;
+        if ([annotation.title isEqualToString:@"垃圾箱(已满)"]) {
+            annotationView.image = [UIImage imageNamed:@"box_hong_ic"];
+        }else if ([annotation.title isEqualToString:@"垃圾箱(未满)"]) {
+            annotationView.image = [UIImage imageNamed:@"box_km_ic"];
+        }else if ([annotation.title isEqualToString:@"垃圾箱(空箱)"]) {
+            annotationView.image = [UIImage imageNamed:@"box_lv_ic"];
+        }else if ([annotation.title isEqualToString:@"清运车(有货)"]){
+            annotationView.image = [UIImage imageNamed:@"che_ym_ic"];
+        }else if ([annotation.title isEqualToString:@"清运车(空车)"]){
+            annotationView.image = [UIImage imageNamed:@"che_wl_ic"];
         }
         return annotationView;
     }
@@ -141,19 +145,9 @@
 
 
 
--(void)addAnnotationsPointLocationCoordinates:(NSArray *)coordinates annotationTypeNmae:(NSString *)annotationTypeNmae
+-(void)addPointAnnotations:(NSArray<MAPointAnnotation *> *)pointAnnotations
 {
-    NSMutableArray *annotations = [[NSMutableArray alloc]init];
-    for (int i=0; i<coordinates.count; i++) {
-        NSValue *coordinateValue = [coordinates objectAtIndex:i];
-        CLLocationCoordinate2D coordinate = [coordinateValue MACoordinateValue];
-        MAPointAnnotation *pointAnnotation = [[MAPointAnnotation alloc]init];
-        pointAnnotation.coordinate = coordinate;
-        pointAnnotation.title = annotationTypeNmae;
-        [annotations addObject:pointAnnotation];
-    }
-    _pointAnnotations = (NSArray *)annotations;
-    
+    _pointAnnotations = pointAnnotations;
     [_mapView addAnnotations:_pointAnnotations];
 }
 
