@@ -277,4 +277,38 @@ UIAlertViewDelegate
     return strUrl3;
 }
 
+
+/**
+ 根据日期计算是星期几
+ @param inputDate 需要计算的日期
+ @return 返回计算结果 星期几
+ */
++(NSString*)weekdayStringFromDate:(NSDate*)inputDate
+{
+    NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null],@"周日",@"周一",@"周二",@"周三",@"周四",@"周五",@"周六", nil];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"Asia/Shanghai"];
+    [calendar setTimeZone: timeZone];
+    NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
+    NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:inputDate];
+    return [weekdays objectAtIndex:theComponents.weekday];
+}
+
+/**
+ 日期格式字符串转为 NSDate
+ @param dateStr 日期字符串
+ @param formatStr 日期格式
+ @return NSDate
+ */
++(NSDate *)dateWithDateStr:(NSString *)dateStr format:(NSString *)formatStr
+{
+    NSString *birthdayStr = dateStr;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:formatStr];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];//解决8小时时间差问题
+    NSDate *birthdayDate = [dateFormatter dateFromString:birthdayStr];
+    return birthdayDate;
+}
+
+
 @end

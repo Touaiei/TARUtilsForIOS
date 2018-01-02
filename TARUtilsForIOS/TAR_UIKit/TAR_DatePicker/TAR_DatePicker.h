@@ -92,7 +92,20 @@ typedef NS_ENUM(NSInteger, TAR_DatePickerReturnStyle) {
  */
 +(NSString *_Nonnull)timeFormatConversionForTextToColon:(NSString *_Nonnull)timeStr;
 
+/**
+ 根据日期计算是星期几
+ @param inputDate 需要计算的日期
+ @return 返回计算结果 星期几
+ */
++(NSString*_Nonnull)weekdayStringFromDate:(NSDate*_Nonnull)inputDate;
 
+/**
+ 日期格式字符串转为 NSDate
+ @param dateStr 日期字符串
+ @param formatStr 日期格式
+ @return NSDate
+ */
++(NSDate *_Nonnull)dateWithDateStr:(NSString *_Nonnull)dateStr format:(NSString *_Nonnull)formatStr;
 
 @end
 
