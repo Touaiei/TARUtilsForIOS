@@ -56,6 +56,7 @@
 {
     _isShowLockPoint = YES;
     _isShowUserLocationMark = YES;
+    _canShowCallout = YES;
     
 }
 
@@ -123,7 +124,7 @@
         {
             annotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:pointReuseIndentifier];
         }
-        annotationView.canShowCallout= YES;       //设置气泡可以弹出，默认为NO
+        annotationView.canShowCallout= _canShowCallout;       //设置气泡可以弹出，默认为NO
         annotationView.animatesDrop = YES;        //设置标注动画显示，默认为NO
         annotationView.draggable = NO;        //设置标注可以拖动，默认为NO
         annotationView.pinColor = MAPinAnnotationColorRed;
