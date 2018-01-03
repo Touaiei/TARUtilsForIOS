@@ -30,12 +30,63 @@
     _compositeManager.delegate = self;
 }
 
+-(void)addNaviCompositeUserConfig
+{
+    
+}
+
+/**
+ 启动导航组件 不传入起点、终点、途径点
+ */
 -(void)presentRoutePlanViewController
 {
     // 通过present的方式显示路线规划页面, 在不传入起终点启动导航组件的模式下，options需传入nil
     [_compositeManager presentRoutePlanViewControllerWithOptions:nil];
 }
-
+/**
+ 启动导航组件 传入终点坐标和名称，不传高德POIId示例：
+ */
+-(void)presentRoutePlanViewControllerWithEndCoordinate:(CLLocationCoordinate2D)coordinate name:(NSString *_Nullable)name
+{
+    NSLog(@"latitude==%f  longitude==%f",coordinate.latitude,coordinate.longitude);
+    //导航组件配置类 since 5.2.0
+    AMapNaviCompositeUserConfig *config = [[AMapNaviCompositeUserConfig alloc] init];
+    //传入终点坐标
+    [config setRoutePlanPOIType:AMapNaviRoutePlanPOITypeEnd location:[AMapNaviPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude] name:name POIId:nil];
+    //启动
+    [self.compositeManager presentRoutePlanViewControllerWithOptions:config];
+}
+/**
+ 启动导航组件 传入起、终点，途径点，且传入高德POIId示例：
+ */
+-(void)presentRoutePlanViewControllerWithCompositeUserConfig:(AMapNaviCompositeUserConfig *_Nullable)userConfig
+{
+    //例如：
+    /*
+     //导航组件配置类 since 5.2.0
+     AMapNaviCompositeUserConfig *config = [[AMapNaviCompositeUserConfig alloc] init];
+     //传入起点，并且带高德POIId
+     [config setRoutePlanPOIType:AMapNaviRoutePlanPOITypeStart location:[AMapNaviPoint locationWithLatitude:40.080525 longitude:116.603039] name:@"北京首都机场" POIId:@"B000A28DAE"];
+     //传入途径点，并且带高德POIId
+     [config setRoutePlanPOIType:AMapNaviRoutePlanPOITypeWay location:[AMapNaviPoint locationWithLatitude:39.941823 longitude:116.426319] name:@"北京大学" POIId:@"B000A816R6"];
+     //传入终点，并且带高德POIId
+     [config setRoutePlanPOIType:AMapNaviRoutePlanPOITypeEnd location:[AMapNaviPoint locationWithLatitude:39.918058 longitude:116.397026] name:@"故宫" POIId:@"B000A8UIN8"];
+     */
+    //启动
+    [self.compositeManager presentRoutePlanViewControllerWithOptions:userConfig];
+}
+/**
+ 启动导航组件 不经过路径规划页面直接发起导航示例：
+ */
+-(void)presentRoutePlanViewControllerDirectlyNavWithEndCoordinate:(CLLocationCoordinate2D)coordinate name:(NSString *_Nullable)name;
+{
+    AMapNaviCompositeUserConfig *config = [[AMapNaviCompositeUserConfig alloc] init];
+    //传入终点
+    [config setRoutePlanPOIType:AMapNaviRoutePlanPOITypeEnd location:[AMapNaviPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude] name:name POIId:nil];
+    //直接进入导航界面
+    [config setStartNaviDirectly:YES];
+    [self.compositeManager presentRoutePlanViewControllerWithOptions:config];
+}
 
 
 #pragma mark --AMapNaviCompositeManagerDelegate--
@@ -139,11 +190,11 @@
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end

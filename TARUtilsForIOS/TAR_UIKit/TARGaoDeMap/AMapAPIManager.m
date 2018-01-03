@@ -57,7 +57,8 @@ AMapNaviDriveViewDelegate
 {
     if (_driveManager == nil)
     {
-        _driveManager = [[AMapNaviDriveManager alloc] init];
+        //        _driveManager = [[AMapNaviDriveManager alloc] init];
+        _driveManager = [AMapNaviDriveManager sharedInstance];
         [_driveManager setDelegate:self];
     }
 }
@@ -78,9 +79,9 @@ AMapNaviDriveViewDelegate
 - (void)calculateRoute:(NSArray<AMapNaviPoint *> *)startPoints endPoints:(NSArray<AMapNaviPoint *> *)endPoints
 {
     [_driveManager calculateDriveRouteWithStartPoints:startPoints
-                                                endPoints:endPoints
-                                                wayPoints:nil
-                                          drivingStrategy:AMapNaviDrivingStrategySingleDefault];
+                                            endPoints:endPoints
+                                            wayPoints:nil
+                                      drivingStrategy:AMapNaviDrivingStrategySingleDefault];
 }
 - (void)driveManagerOnCalculateRouteSuccess:(AMapNaviDriveManager *)driveManager
 {

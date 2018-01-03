@@ -27,12 +27,12 @@ AMapNaviDriveViewDelegate
 #pragma mark --配置高德导航Manager--
 -(void)initNavigationManager
 {
-    
     NSLog(@"//1) 创建 AMapNaviDriveManager。");
-
+    
     if (_driveManager == nil)
     {
-        _driveManager = [[AMapNaviDriveManager alloc] init];
+        //        _driveManager = [[AMapNaviDriveManager alloc] init];
+        _driveManager = [AMapNaviDriveManager sharedInstance];
         [_driveManager setDelegate:self];
     }
 }
@@ -40,7 +40,7 @@ AMapNaviDriveViewDelegate
 - (void)initDriveView
 {
     NSLog(@"//2) 创建 AMapNaviDriveView。");
-
+    
     if (_driveView == nil)
     {
         _driveView = [[AMapNaviDriveView alloc] initWithFrame:self.bounds];
@@ -50,20 +50,20 @@ AMapNaviDriveViewDelegate
 - (void)configDriveNavi
 {
     NSLog(@"//3) 将 AMapNaviDriveView 与 AMapNaviManager 关联起来，并将 AManNaviDriveView 显示出来。");
-
     
-
+    
+    
     [_driveManager addDataRepresentative:_driveView];
     [self addSubview:_driveView];
 }
 - (void)calculateRoute:(NSArray<AMapNaviPoint *> *)startPoints endPoints:(NSArray<AMapNaviPoint *> *)endPoints
 {
     NSLog(@"//4) 进行路线规划。");
-
+    
     BOOL isSuccess = [_driveManager calculateDriveRouteWithStartPoints:startPoints
-                                            endPoints:endPoints
-                                            wayPoints:nil
-                                      drivingStrategy:AMapNaviDrivingStrategySingleDefault];
+                                                             endPoints:endPoints
+                                                             wayPoints:nil
+                                                       drivingStrategy:AMapNaviDrivingStrategySingleDefault];
     if (isSuccess == YES) {
         [self driveManagerOnCalculateRouteSuccess:nil];
     }

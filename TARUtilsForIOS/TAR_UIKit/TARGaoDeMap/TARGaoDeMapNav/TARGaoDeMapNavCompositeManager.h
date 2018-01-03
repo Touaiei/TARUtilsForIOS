@@ -24,10 +24,25 @@
  */
 -(void)initCompositeManager;
 
-
+/**
+ 启动导航组件 不传入起点、终点、途径点
+ */
 -(void)presentRoutePlanViewController;
 
+/**
+ 启动导航组件 传入终点坐标和名称，不传高德POIId示例：
+ */
+-(void)presentRoutePlanViewControllerWithEndCoordinate:(CLLocationCoordinate2D)coordinate name:(NSString *_Nullable)name;
 
+/**
+ 启动导航组件 传入起、终点，途径点，且传入高德POIId示例：
+ */
+-(void)presentRoutePlanViewControllerWithCompositeUserConfig:(AMapNaviCompositeUserConfig *_Nullable)userConfig;
+
+/**
+ 启动导航组件 不经过路径规划页面直接发起导航示例：
+ */
+-(void)presentRoutePlanViewControllerDirectlyNavWithEndCoordinate:(CLLocationCoordinate2D)coordinate name:(NSString *_Nullable)name;
 @end
 
 
