@@ -13,8 +13,8 @@
 @interface TARGaoDeMapView()
 <MAMapViewDelegate>
 {
+    BOOL _isSetCenterCoordinate;//是否需要手动设置地图中心坐标()
     MAMapView *_mapView;//地图View
-    
     NSArray<MAPointAnnotation *> *_pointAnnotations;//一组大头针
 }
 
@@ -72,6 +72,9 @@
 -(void)initMAMapView
 {
     
+    
+    
+    
     //设置地图屏幕中心的经纬度坐标点
     _mapView.centerCoordinate = _mapView.userLocation.location.coordinate;
     ///地图需要v4.5.0及以上版本才必须要打开此选项（v4.5.0以下版本，需要手动配置info.plist）
@@ -81,6 +84,9 @@
     _mapView.delegate = self;
     _mapView.showsCompass = NO;//是否显示罗盘，默认为YES
     _mapView.showsScale = NO;//是否显示比例尺，默认为YES
+    if (_isSetCenterCoordinate == YES) {
+        _mapView.centerCoordinate = _centerCoordinate;
+    }
     ///把地图添加至view
     [self addSubview:_mapView];
     
@@ -153,7 +159,11 @@
 }
 
 
-
+-(void)setCenterCoordinate:(CLLocationCoordinate2D)centerCoordinate
+{
+    _centerCoordinate = centerCoordinate;
+    _isSetCenterCoordinate = YES;
+}
 
 
 
