@@ -211,11 +211,13 @@ typedef NS_ENUM(NSInteger, FontSize){
 +(NSMutableArray *_Nonnull)arrayExchangeObjectWithArray:(NSMutableArray *_Nonnull)array atIndex1:(NSUInteger)index1 atIndex2:(NSUInteger)index2;
 
 /**
- //将string字符串转换为array数组
+ //将string字符串分割为array数组
  @param string string字符串
+ @param separator 分隔符
  @return 转换后数组
  */
-+(NSArray *_Nonnull)stringToArrayWithString:(NSString *_Nonnull)string;
++(NSArray<NSString *> *_Nonnull)stringToArrayWithString:(NSString *_Nonnull)string separator:(NSString *)separator;
+
 
 /**
  //将array数组转换为string字符串,分割符是','

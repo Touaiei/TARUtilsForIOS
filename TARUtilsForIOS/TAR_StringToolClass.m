@@ -111,7 +111,7 @@
     for (int i=0 ;i<string.length;i++)
     {
         int asciiCode = [string characterAtIndex:i]; //65
-//        NSLog(@"asciiCode==%d",asciiCode);
+        //        NSLog(@"asciiCode==%d",asciiCode);
         [ASCIICodeString appendString:[NSString stringWithFormat:@"%d",asciiCode]];
     }
     return ASCIICodeString;
@@ -129,7 +129,7 @@
         //        [muString stringByAppendingString:value];
         signString = [NSString stringWithFormat:@"%@%@",signString,value];
     }
-//    signString = [signString stringByAppendingString:@"jdkjzn_app_sign"];
+    //    signString = [signString stringByAppendingString:@"jdkjzn_app_sign"];
     
     signString = [self addJiaDuanSuffix:signString];
     //    NSLog(@"signString==%@",signString);
@@ -233,7 +233,7 @@
 }
 /*
  传入json格式的字符串，返回转义之后的数组或者字典
-  */
+ */
 +(id)JSONToArray:(NSString *)str;
 {
     NSData* data = [str dataUsingEncoding:NSUTF8StringEncoding];
@@ -249,8 +249,8 @@
     NSError *error = nil;
     NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
     id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                          options:NSJSONReadingAllowFragments
-                                                            error:&error];
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:&error];
     if (jsonObject != nil && error == nil){
         return jsonObject;
     }else{
@@ -334,14 +334,14 @@
     }else{
         return YES;
     }
-//    {
-//        NSString *value = [NSString stringWithFormat:@"%@",[dict objectForKey:key]];
-//        if ([value isKindOfClass:[NSNull class]] || [value isEqual:nil] || value==NULL || value==nil || [value isEqualToString:@""] || [value length]<=0) {
-//            return YES;
-//        }else{
-//            return NO;
-//        }
-//    }
+    //    {
+    //        NSString *value = [NSString stringWithFormat:@"%@",[dict objectForKey:key]];
+    //        if ([value isKindOfClass:[NSNull class]] || [value isEqual:nil] || value==NULL || value==nil || [value isEqualToString:@""] || [value length]<=0) {
+    //            return YES;
+    //        }else{
+    //            return NO;
+    //        }
+    //    }
     
 }
 +(BOOL)isEqualEmptyFromMoreLayerWithDictionary:(NSDictionary *)dict withKey:(NSString *)key
@@ -355,14 +355,14 @@
             if ([valueDic isKindOfClass:[NSNull class]] || [valueDic isEqual:nil] || [valueDic count]<=0) {
                 return YES;
             }else{
-//                return NO;
+                //                return NO;
             }
         }else if ([[dict objectForKey:key] isKindOfClass:[NSArray class]]) {
             NSArray *valueArray = [dict objectForKey:key];
             if ([valueArray isKindOfClass:[NSNull class]] || [valueArray isEqual:nil] || [valueArray count]<=0) {
                 return YES;
             }else{
-//                return NO;
+                //                return NO;
             }
             
         }else{
@@ -370,7 +370,7 @@
             if ([value isKindOfClass:[NSNull class]] || [value isEqual:nil] || [value isEqualToString:@""] || [value length]<=0) {
                 return YES;
             }else{
-//                return NO;
+                //                return NO;
             }
         }
         return NO;
@@ -459,7 +459,7 @@
     if ([self isEqualPureFloat:string] || [self isEqualPureInt:string]) {
         return NO;
     }
-//    NSString *str = [NSString stringWithFormat:@"%@",string];
+    //    NSString *str = [NSString stringWithFormat:@"%@",string];
     if (![string isKindOfClass:[NSString class]] || [string isEqualToString:@""] || [string isEqual:[NSNull class]] || [string isKindOfClass:[NSNull class]] || [string length] <= 0 || string == nil || string == NULL) {
         return YES;
     }else{
@@ -813,21 +813,26 @@
     }
 }
 
-
 /**
- //将string字符串转换为array数组
+ //将string字符串分割为array数组
  @param string string字符串
+ @param separator 分隔符
  @return 转换后数组
  */
-+(NSArray *)stringToArrayWithString:(NSString *)string
++(NSArray<NSString *> *_Nonnull)stringToArrayWithString:(NSString *_Nonnull)string separator:(NSString *)separator
 {
-    if (![string containsString:@","]) {
-        return [[NSArray alloc]init];
+    if (![string isKindOfClass:[NSString class]]) {
+        return @[];
     }
-    NSArray *array = [string componentsSeparatedByString:@","];//分隔符逗号
+    if (string.length < 1) {
+        return @[];
+    }
+    if (![string containsString:separator]) {
+        return @[];
+    }
+    NSArray *array = [string componentsSeparatedByString:separator];//分隔符逗号
     return array;
 }
-
 
 /**
  //将array数组转换为string字符串,分割符是','
@@ -840,7 +845,6 @@
     return string;
 }
 
-
 /**
  将ISO8859_1字符串转换为UTF8字符串
  @param iSO8859_1String 传入的ISO8859_1字符串
@@ -849,9 +853,9 @@
 +(NSString *)ISO8859_1StringToUTF8String:(NSString *)iSO8859_1String
 {
     NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingISOLatin1);
-    
     return [NSString stringWithUTF8String:[iSO8859_1String cStringUsingEncoding:enc]];
 }
+
 
 @end
 
