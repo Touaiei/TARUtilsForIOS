@@ -35,7 +35,7 @@
 //@property(nonatomic, strong)UIButton *deleteImageButton;//删除图片按钮
 @property(nonatomic, strong)NSMutableArray<TARUploadImageViewItemModel *> *imagesArrayTotal;//所以图片总数组
 @property(nonatomic, strong)NSArray<TARUploadImageViewItemModel *> *imagesArraySingle;//每次上传图片数组
-@property(nonatomic, assign)NSInteger maxImageNumber;//图片最大数量
+@property(nonatomic, assign)NSInteger maxImageNumber;//最大可传图片数量（默认9张）
 @property(nonatomic, assign, readonly)NSInteger canImageNumber;//剩余可传图片数量
 
 

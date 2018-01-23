@@ -19,49 +19,62 @@
 {
     CGFloat uploadButton_X;
     CGFloat uploadButton_Y;
-
 }
-
 
 @end
 
-
-
 @implementation TAR_UploadImageShowView
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self initialize];
+    }
+    return self;
 }
-*/
-
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _imagesArrayTotal = [[NSMutableArray alloc]init];
-        _imagesArraySingle = [[NSMutableArray alloc]init];
+        [self initialize];
         [self initUploadPicturesView];
-        
-        
     }
     return self;
 }
-
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self initialize];
+    }
+    return self;
+}
+-(void)initialize
+{
+    _imagesArrayTotal = [[NSMutableArray alloc]init];
+    _imagesArraySingle = [[NSMutableArray alloc]init];
+    _maxImageNumber = 9;//默认最大上传图片9张
+}
 
 -(void)initUploadPicturesView
 {
     /*显示图片背景View*/
     _uploadImageBGView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UploadPictureBGView_W, UploadPicturesView_H+20)];
-//    _uploadImageBGView.layer.borderColor = [UIColor redColor].CGColor;
-//    _uploadImageBGView.layer.borderWidth =1;
+    //    _uploadImageBGView.layer.borderColor = [UIColor redColor].CGColor;
+    //    _uploadImageBGView.layer.borderWidth =1;
     _uploadImageBGView.backgroundColor = [UIColor whiteColor];
     [self addSubview:_uploadImageBGView];
     
     _uploadImageView = [[UIView alloc]initWithFrame:CGRectMake((_uploadImageBGView.width - UploadPicturesView_W)/2.0, 10, UploadPicturesView_W, UploadPicturesView_H)];
-//    _uploadImageView.layer.borderColor = [UIColor yellowColor].CGColor;
-//    _uploadImageView.layer.borderWidth =1;
+    //    _uploadImageView.layer.borderColor = [UIColor yellowColor].CGColor;
+    //    _uploadImageView.layer.borderWidth =1;
     _uploadImageView.backgroundColor = [UIColor whiteColor];
     [_uploadImageBGView addSubview:_uploadImageView];
     
@@ -71,7 +84,7 @@
     _uploadImageButton.frame = CGRectMake(0, 0, imageCellView_W_H, imageCellView_W_H);
     _uploadImageButton.hidden = NO;
     _uploadImageButton.layer.cornerRadius = 5;
-//    [_uploadImageButton setTitle:@"上传" forState:UIControlStateNormal];
+    //    [_uploadImageButton setTitle:@"上传" forState:UIControlStateNormal];
     [_uploadImageButton addTarget:self action:@selector(uploadButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_uploadImageButton setBackgroundImage:[UIImage imageNamed:@"service_repair_picture_add"] forState:UIControlStateNormal];
     [_uploadImageView addSubview:_uploadImageButton];
@@ -86,18 +99,18 @@
         [_imagesArrayTotal addObjectsFromArray:images];
     }
     //    _maxImageNumber = _maxImage - _imagesArray.count;
-
+    
     CGFloat uploadImageButton_W_H = imageCellView_W_H*(3/3.0);
     if (!_uploadImageButton) {
         _uploadImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
     }
     _uploadImageButton.frame = CGRectMake(uploadButton_X+5, 0, uploadImageButton_W_H, uploadImageButton_W_H);
-//    [_uploadImageButton setTitle:@"上传" forState:UIControlStateNormal];
+    //    [_uploadImageButton setTitle:@"上传" forState:UIControlStateNormal];
     _uploadImageButton.hidden = NO;
     [_uploadImageButton addTarget:self action:@selector(uploadButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_uploadImageButton setBackgroundImage:[UIImage imageNamed:@"service_repair_picture_add"] forState:UIControlStateNormal];
     [_uploadImageView addSubview:_uploadImageButton];
-     
+    
     NSLog(@"_maxImageNumber == %ld",(long)_maxImageNumber);
     if (_maxImageNumber - _imagesArrayTotal.count <= 0) {
         _uploadImageButton.hidden = YES;
@@ -120,18 +133,18 @@
         
         /*ㄨㄨ*/
         UIButton *_deleteImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _deleteImageButton.backgroundColor = Color_RGBA(0, 0, 0, 0.6);
+        //        _deleteImageButton.backgroundColor = Color_RGBA(0, 0, 0, 0.6);
         _deleteImageButton.layer.cornerRadius = 12.5;
         _deleteImageButton.tag = i;
         _deleteImageButton.frame = CGRectMake(_cellImageView.width-12.5, -12.5, 25, 25);
-//        [_deleteImageButton setTitle:@"ㄨ" forState:UIControlStateNormal];
+        //        [_deleteImageButton setTitle:@"ㄨ" forState:UIControlStateNormal];
         [_deleteImageButton setBackgroundImage:[UIImage imageNamed:@"service_repair_picture_delete"] forState:UIControlStateNormal];
         [_deleteImageButton addTarget:self action:@selector(deleteImageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_cellImageView addSubview:_deleteImageButton];
         
         _uploadImageButton.origin = CGPointMake(((i+1)%columnsNumber)*(imageCellView_W_H+columnSpacing), (i+1)/columnsNumber*imageCellView_W_H);
         
-//        [_uploadImageButton setOriginX:CGRectGetMaxX(_cellImageView.frame)+columnSpacing];
+        //        [_uploadImageButton setOriginX:CGRectGetMaxX(_cellImageView.frame)+columnSpacing];
         
         _uploadImageView.height = rowNumber*(imageCellView_W_H+(rowNumber-1)*rowSpacing);//从新指定背景视图高度
         _uploadImageBGView.height = _uploadImageView.height+20;
@@ -141,8 +154,8 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(uploadImageCompleteResponse:)]) {
         [self.delegate uploadImageCompleteResponse:_imagesArrayTotal];
     }
-//    _uploadImageView.height = (rowNumber)*UploadPicturesView_H;//从新指定背景视图高度
-//    _uploadImageBGView.height = _uploadImageView.height+20;
+    //    _uploadImageView.height = (rowNumber)*UploadPicturesView_H;//从新指定背景视图高度
+    //    _uploadImageBGView.height = _uploadImageView.height+20;
 }
 
 
@@ -183,4 +196,5 @@
 
 
 @end
+
 
