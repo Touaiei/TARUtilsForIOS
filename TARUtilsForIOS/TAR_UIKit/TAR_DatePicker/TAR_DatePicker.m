@@ -237,10 +237,19 @@ UIAlertViewDelegate
         return dateStr;
     }
     //替换字符串（把"- -"替换成"年 月 日"）
-    NSString *strUrl = [dateStr stringByReplacingOccurrencesOfString:@"-" withString:@"年"];
-    NSString *strUrl2 = [strUrl stringByReplacingOccurrencesOfString:@"-" withString:@"月"];
-    NSString *strUrl3 = [strUrl2 stringByAppendingString:@"日"];
-    return strUrl3;
+    NSArray *array1 = [dateStr componentsSeparatedByString:@"-"];
+    NSString *dateString = [[NSString alloc]init];
+    for (int i=0; i<array1.count; i++) {
+        NSString *str = [array1 objectAtIndex:i];
+        if (i == 0) {
+            dateString = [NSString stringWithFormat:@"%@年",str];
+        }else if (i == 1) {
+            dateString = [NSString stringWithFormat:@"%@%@月",dateString,str];
+        }else if (i == 2) {
+            dateString = [NSString stringWithFormat:@"%@%@日",dateString,str];
+        }
+    }
+    return dateString;
 }
 
 /**
@@ -254,10 +263,19 @@ UIAlertViewDelegate
         return timeStr;
     }
     //替换字符串（把": :"替换成"时 分 秒"）
-    NSString *strUrl = [timeStr stringByReplacingOccurrencesOfString:@":" withString:@"时"];
-    NSString *strUrl2 = [strUrl stringByReplacingOccurrencesOfString:@":" withString:@"分"];
-    NSString *strUrl3 = [strUrl2 stringByAppendingString:@"秒"];
-    return strUrl3;
+    NSArray *array1 = [timeStr componentsSeparatedByString:@":"];
+    NSString *timeString = [[NSString alloc]init];
+    for (int i=0; i<array1.count; i++) {
+        NSString *str = [array1 objectAtIndex:i];
+        if (i == 0) {
+            timeString = [NSString stringWithFormat:@"%@时",str];
+        }else if (i == 1) {
+            timeString = [NSString stringWithFormat:@"%@%@分",timeString,str];
+        }else if (i == 2) {
+            timeString = [NSString stringWithFormat:@"%@%@秒",timeString,str];
+        }
+    }
+    return timeString;
 }
 
 /**
@@ -312,3 +330,4 @@ UIAlertViewDelegate
 
 
 @end
+
