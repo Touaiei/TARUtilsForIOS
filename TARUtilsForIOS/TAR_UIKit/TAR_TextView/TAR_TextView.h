@@ -12,10 +12,10 @@
 <
 UITextViewDelegate
 >
-
+@property(nonatomic,copy)NSString *contentText;//内容文本
 @property(nonatomic,strong)UILabel *placeholderLabel;//
-@property(nonatomic,copy)NSString *placeholderText;//
-@property(nonatomic,assign)CGFloat fontSize;//
+@property(nonatomic,copy)NSString *placeholderText;//占位符文本
+@property(nonatomic,assign)CGFloat fontSize;//字体大小
 @property (nonatomic,strong) CAShapeLayer *alertLayer;
 
 
@@ -25,3 +25,4 @@ UITextViewDelegate
 -(void)showAlert;
 
 @end
+

@@ -14,7 +14,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.delegate = self;
-
+        
     }
     return self;
 }
@@ -29,7 +29,14 @@
     return self;
 }
 
-
+-(void)setContentText:(NSString *)contentText
+{
+    _contentText = contentText;
+    self.text = _contentText;
+    if (_contentText.length > 0) {
+        _placeholderLabel.hidden = YES;
+    }
+}
 -(void)setPlaceholderText:(NSString *)placeholderText
 {
     _placeholderText = placeholderText;
@@ -47,7 +54,7 @@
     [self addSubview:_placeholderLabel];
     CGSize placeholderSize =  [TAR_StringToolClass calculateTextHeightWithText:_placeholderText andFont:_fontSize andWidth:_placeholderLabel.width];
     [_placeholderLabel setHeight:placeholderSize.height];
-
+    
 }
 -(void)setFontSize:(CGFloat)fontSize
 {
@@ -118,11 +125,12 @@
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end
+
