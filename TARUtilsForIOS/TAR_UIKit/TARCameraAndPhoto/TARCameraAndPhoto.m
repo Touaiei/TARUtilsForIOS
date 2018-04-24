@@ -149,7 +149,7 @@
     //判断是否有相机
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
+        picker.delegate = _imagePickerDelegate;
         //设置拍照后的图片可被编辑
         picker.allowsEditing = _allowsEditing;
         //资源类型为照相机
