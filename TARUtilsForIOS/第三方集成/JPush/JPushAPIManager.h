@@ -35,7 +35,16 @@ JPUSHRegisterDelegate//激光JPush推送代理
 -(void)handleRemoteNotification:(NSDictionary *)remoteInfo;
 
 
+/**
+ 设置极光推送别名
+ @param alias 唯一别名
+ @param completion 回调返回对应的参数alias。并返回对应的状态码：0为成功，其他返回码请参考错误码定义。seq为调用时传入的会话序列号
+ @param seq 请求时传入的序列号，会在回调时原样返回
+ */
+-(void)setAlias:(NSString *)alias completion:(JPUSHAliasOperationCompletion)completion seq:(NSInteger)seq;
+
 #pragma mark --点击推送消息后在此处理--
 -(void)clickPushMessageWithApplication:(UIApplication *)application andUserInfo:(NSDictionary *)userInfo;
 
 @end
+

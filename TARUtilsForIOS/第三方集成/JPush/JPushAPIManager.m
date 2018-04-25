@@ -68,10 +68,26 @@
 {
     [JPUSHService registerDeviceToken:deviceToken];
 }
+
+/**
+ 设置极光推送别名
+ @param alias 唯一别名
+ @param completion 回调返回对应的参数alias。并返回对应的状态码：0为成功，其他返回码请参考错误码定义。seq为调用时传入的会话序列号
+ @param seq 请求时传入的序列号，会在回调时原样返回
+ */
+-(void)setAlias:(NSString *)alias completion:(JPUSHAliasOperationCompletion)completion seq:(NSInteger)seq
+{
+    [JPUSHService setAlias:alias completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        completion(iResCode, iAlias, seq);
+    } seq:seq];
+}
+
+
+
 -(void)handleRemoteNotification:(NSDictionary *)remoteInfo
 {
     [JPUSHService handleRemoteNotification:remoteInfo];
-
+    
 }
 
 
@@ -79,14 +95,14 @@
 -(void)clickPushMessageWithApplication:(UIApplication *)application andUserInfo:(NSDictionary *)userInfo
 {
     NSLog(@"applicationState == %ld ，userInfo == %@",(long)application.applicationState,userInfo);
-//        NSString *NotificationMsg = userInfo[@"aps"][@"alert"];
-//        [[NSUserDefaults standardUserDefaults]setObject:NotificationMsg forKey:@"PropertyNewDynamic_KEY"];
+    //        NSString *NotificationMsg = userInfo[@"aps"][@"alert"];
+    //        [[NSUserDefaults standardUserDefaults]setObject:NotificationMsg forKey:@"PropertyNewDynamic_KEY"];
     if (!self.window) {
         return;
     }
     UINavigationController *rootVC = [[self.window.rootViewController childViewControllers] firstObject];
     //    //用户点击推送通知测试VC
-
+    
     TaskListViewController *webVC = [[TaskListViewController alloc]init];
     webVC.taskListType = TaskListType_Received;
     NSString *taskType = [TAR_StringToolClass isEqualEmptyFromSingleLayerWithDictionary:userInfo withKey:@"taskType"]?@"":[userInfo objectForKey:@"taskType"];;
@@ -121,26 +137,26 @@
     }else{
     }
     /*
-    switch (application.applicationState) {
-        case UIApplicationStateActive:{
-            //活跃状态
-            NSLog(@"UIApplicationStateActive");
-        }
-            break;
-        case UIApplicationStateInactive:
-            //不活跃状态
-            NSLog(@"UIApplicationStateInactive");
-            break;
-        case UIApplicationStateBackground:
-            //在后台
-            NSLog(@"UIApplicationStateBackground");
-            break;
-        default:
-            //
-            NSLog(@"applicationStateNotFind");
-            break;
-    }
-    */
+     switch (application.applicationState) {
+     case UIApplicationStateActive:{
+     //活跃状态
+     NSLog(@"UIApplicationStateActive");
+     }
+     break;
+     case UIApplicationStateInactive:
+     //不活跃状态
+     NSLog(@"UIApplicationStateInactive");
+     break;
+     case UIApplicationStateBackground:
+     //在后台
+     NSLog(@"UIApplicationStateBackground");
+     break;
+     default:
+     //
+     NSLog(@"applicationStateNotFind");
+     break;
+     }
+     */
 }
 
 
@@ -180,3 +196,4 @@
 
 
 @end
+
